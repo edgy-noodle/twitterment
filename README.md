@@ -1,6 +1,6 @@
 # TWITTER SENTIMENT ANALYSIS
 
-![CI]()
+![twitter ci](https://github.com/edgy-noodle/twitter/actions/workflows/ci.yaml/badge.svg)
 
 ## How to run
 - ### Kafka
