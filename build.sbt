@@ -1,4 +1,25 @@
-// val dependencies = Seq(???)
+// Dependency versions
+val pureconfigVer = "0.17.1"
+val loggingVer = "3.9.2"
+val testVer = "3.2.11"
+
+// Dependencies
+val pureconfig = Seq(
+  "com.github.pureconfig" %% "pureconfig" % pureconfigVer
+  )
+val logging = Seq(
+  "com.typesafe.scala-logging" %% "scala-logging" % loggingVer
+)
+val test = Seq(
+  "org.scalatest" %% "scalatest-wordspec" % testVer,
+  "org.scalatest" %% "scalatest-wordspec" % testVer % "test"
+)
+
+val dependencies = 
+  pureconfig ++ 
+  logging ++
+  test
+
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
   organization := "com.alawresz"
@@ -12,5 +33,5 @@ lazy val root = (project in file("."))
     resolvers ++= Seq(
       "clojure" at "https://repo.clojars.org"
     ),
-    // libraryDependencies ++= dependencies
+    libraryDependencies ++= dependencies
   )
