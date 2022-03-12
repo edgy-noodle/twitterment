@@ -1,0 +1,24 @@
+# bloop and metals
+null
+.bloop
+.bsp
+.metals
+
+# vscode
+.vscode
+
+# sbt
+project/project/
+project/target/
+project/metals.sbt
+target/
+
+# intellij idea
+*.log
+*.iml
+*.ipr
+*.iws
+.idea
+
+# mac
+.DS_Store

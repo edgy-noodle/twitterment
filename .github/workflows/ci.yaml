@@ -1,0 +1,15 @@
+name: twitter ci
+on: [push]
+jobs:
+  scala-tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: repo checkout
+        uses: actions/checkout@v2
+      - name: jdk setup
+        uses: actions/setup-java@v2
+        with:
+          distribution: adopt
+          java-version: 8
+      - name: run tests
+        run: sbt test
