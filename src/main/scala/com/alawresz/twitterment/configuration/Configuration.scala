@@ -22,6 +22,7 @@ trait Configuration extends StrictLogging {
       |----------------------------------------------------------------------------------------------------------------------------
       | tweet-spout: ${config.stormConfig.tweetSpout}
       | tweet-sink: ${config.stormConfig.tweetSink}
+      | twitter: ${config.twitterConfig}
       |----------------------------------------------------------------------------------------------------------------------------
       |""".stripMargin)
   }
