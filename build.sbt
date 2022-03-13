@@ -13,8 +13,8 @@ val logging = Seq(
   "com.typesafe.scala-logging" %% "scala-logging" % loggingVer
 )
 val test = Seq(
-  "org.scalatest" %% "scalatest-wordspec" % testVer,
-  "org.scalatest" %% "scalatest-wordspec" % testVer % "test"
+  "org.scalatest" %% "scalatest" % testVer,
+  "org.scalatest" %% "scalatest" % testVer % "test"
 )
 
 val dependencies = 

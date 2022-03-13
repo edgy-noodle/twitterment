@@ -1,11 +1,6 @@
 package com.alawresz.twitterment
 
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers
 
-class Test extends AnyWordSpec {
-  "This" should {
-    "say hello" in {
-      assert(true)
-    }
-  }
-}
+trait Test extends AnyWordSpec with Matchers
