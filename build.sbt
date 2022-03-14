@@ -5,6 +5,7 @@ val logbackVer = "1.2.10"
 val testVer = "3.2.11"
 val akkaVer = "2.6.8"
 val akkaHttpVer = "10.2.9"
+val stormVer = "2.3.0"
 
 // Dependencies
 val pureconfig = Seq(
@@ -23,12 +24,18 @@ val akka = Seq(
   "com.typesafe.akka" %% "akka-http" % akkaHttpVer,
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVer
 )
+val storm = Seq(
+  "org.apache.storm" % "storm-core",
+  "org.apache.storm" % "storm-client",
+  "org.apache.storm" % "storm-kafka-client"
+).map(_ % stormVer)
 
 val dependencies = 
   pureconfig ++ 
   logging ++
   test ++
-  akka
+  akka ++
+  storm
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
