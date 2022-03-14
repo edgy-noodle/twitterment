@@ -9,5 +9,5 @@ object Main extends App with Configuration {
     config.twitterConfig.url
   )
 
-  val tweet = akkaRequest.getTweet()  
+  val tweets = akkaRequest.getTweets(println)
 }

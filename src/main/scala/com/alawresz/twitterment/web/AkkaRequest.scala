@@ -10,17 +10,10 @@ import scala.util.Failure
 import scala.util.Success
 import scala.concurrent.Await
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import spray.json.DefaultJsonProtocol._
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 
-case class TweetData(id: String, text: String)
-case class Tweet(data: TweetData)
-
-case class AkkaRequest(token: String, url: String) extends AkkaSystem with SprayJsonSupport {
+case class AkkaRequest(token: String, url: String) extends AkkaSystem with TweetJsonSupport {
   import system.dispatcher
-  implicit val tweetDataFormat = jsonFormat2(TweetData)
-  implicit val tweetFormat = jsonFormat1(Tweet)
+  
   private val authHeader = RawHeader("Authorization", s"Bearer $token")
   private val request = HttpRequest(
     method = HttpMethods.GET,
@@ -28,16 +21,15 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Spray
     headers = List(authHeader)
   )
 
-  def getTweet() = {
+  def getTweets(f: Tweet => Unit): Unit = {
     val responseFuture = Http()
       .singleRequest(request)
 
-    val tweetFuture = responseFuture.transformWith {
+    responseFuture.transformWith {
       case Success(response) if response.status == StatusCodes.OK =>
         response.entity.dataBytes.runForeach { chunk =>
-          logger.info(Unmarshal(chunk).to[Tweet].map { tweet =>
-            tweet.data.toString()
-          }.toString())
+          val tweetFuture = Unmarshal(chunk).to[Tweet]
+          processTweet(tweetFuture)(f)
         }
       case Success(response) =>
         response.discardEntityBytes()
@@ -47,5 +39,9 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Spray
         logger.error(exception.toString())
         Future.failed(exception)
     }
+  }
+
+  private def processTweet(tweetFuture: Future[Tweet])(f: Tweet => Unit) = {
+    tweetFuture.foreach(f)
   }
 }
