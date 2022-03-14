@@ -1,9 +1,9 @@
 package com.alawresz.twitterment.storm.bolts
+
 import com.alawresz.twitterment.web.Tweet
 import org.apache.storm.kafka.bolt.KafkaBolt
 import java.util.Properties
 import org.apache.kafka.clients.producer.ProducerConfig
-
 
 object TweetsInBolt {
   private val producerProps = (config: TweetSinkConfig) => {

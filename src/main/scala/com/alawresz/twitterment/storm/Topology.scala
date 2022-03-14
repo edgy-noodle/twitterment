@@ -6,14 +6,18 @@ import org.apache.storm.Config
 import org.apache.storm.topology.TopologyBuilder
 import com.alawresz.twitterment.storm.spouts.TweetSpout
 import com.alawresz.twitterment.configuration.Configuration
+import com.alawresz.twitterment.storm.bolts.TweetsInBolt
 
 object Topology extends Configuration {
   def buildTopology(): StormTopology = {
     val builder = new TopologyBuilder()
 
-    val tweetSpout = TweetSpout(config.stormConfig.tweetSpout)
+    val tweetsInBolt = TweetsInBolt(config.stormConfig.tweetsIn)
     builder
-      .setSpout(tweetSpout.toString(), tweetSpout)
+      .setBolt(tweetsInBolt.toString(), tweetsInBolt)
+    // val tweetSpout = TweetSpout(config.stormConfig.tweetsSpout)
+    // builder
+    //   .setSpout(tweetSpout.toString(), tweetSpout)
 
     builder.createTopology()
   }

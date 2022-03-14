@@ -20,8 +20,8 @@ trait Configuration extends StrictLogging {
       |----------------------------------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                 
       | TWITTERMENT Configuration:
       |----------------------------------------------------------------------------------------------------------------------------
-      | tweet-spout: ${config.stormConfig.tweetSpout}
-      | tweet-sink: ${config.stormConfig.tweetSink}
+      | tweet-spout: ${config.stormConfig.tweetsSpout}
+      | tweet-sink: ${config.stormConfig.tweetsIn}
       | twitter: ${config.twitterConfig}
       |----------------------------------------------------------------------------------------------------------------------------
       |""".stripMargin)
