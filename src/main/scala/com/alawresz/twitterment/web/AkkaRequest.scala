@@ -2,13 +2,12 @@ package com.alawresz.twitterment.web
 
 import scala.concurrent.duration._
 import scala.concurrent.Future
+import scala.util.Failure
+import scala.util.Success
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
-import scala.util.Failure
-import scala.util.Success
-import scala.concurrent.Await
 import akka.http.scaladsl.unmarshalling.Unmarshal
 
 case class AkkaRequest(token: String, url: String) extends AkkaSystem with TweetJsonSupport {
@@ -21,7 +20,9 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
     headers = List(authHeader)
   )
 
-  def getTweets(f: Tweet => Unit): Unit = {
+  def getTweets(): Tweet = {
+    var tweet: Tweet = Tweet(TweetData("", ""))
+
     val responseFuture = Http()
       .singleRequest(request)
 
@@ -29,7 +30,7 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
       case Success(response) if response.status == StatusCodes.OK =>
         response.entity.dataBytes.runForeach { chunk =>
           val tweetFuture = Unmarshal(chunk).to[Tweet]
-          processTweet(tweetFuture)(f)
+          tweet = processTweet(tweetFuture)
         }
       case Success(response) =>
         response.discardEntityBytes()
@@ -39,9 +40,10 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
         logger.error(exception.toString())
         Future.failed(exception)
     }
+    tweet
   }
 
-  private def processTweet(tweetFuture: Future[Tweet])(f: Tweet => Unit) = {
-    tweetFuture.foreach(f)
+  private def processTweet(tweetFuture: Future[Tweet]): Tweet = {
+    tweetFuture.value.get.get
   }
 }

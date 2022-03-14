@@ -5,6 +5,6 @@ case class TweetSinkConfig(
   clientId: String,
   topic: String,
   batchSize: Int,
-  lingerMs: Short,
+  lingerMs: Long,
   acks: String
 )

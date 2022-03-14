@@ -13,7 +13,7 @@ val pureconfig = Seq(
   "com.github.pureconfig" %% "pureconfig" % pureconfigVer
   )
 val logging = Seq(
-  "ch.qos.logback" % "logback-classic" % logbackVer,
+  // "ch.qos.logback" % "logback-classic" % logbackVer,
   "com.typesafe.scala-logging" %% "scala-logging" % loggingVer
 )
 val test = Seq(
