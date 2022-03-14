@@ -6,6 +6,7 @@ val testVer = "3.2.11"
 val akkaVer = "2.6.8"
 val akkaHttpVer = "10.2.9"
 val stormVer = "2.3.0"
+val kafkaVer = "3.1.0"
 
 // Dependencies
 val pureconfig = Seq(
@@ -29,13 +30,17 @@ val storm = Seq(
   "org.apache.storm" % "storm-client",
   "org.apache.storm" % "storm-kafka-client"
 ).map(_ % stormVer)
+val kafka = Seq(
+  "org.apache.kafka" % "kafka-clients" % kafkaVer
+)
 
 val dependencies = 
   pureconfig ++ 
   logging ++
   test ++
   akka ++
-  storm
+  storm ++
+  kafka
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
