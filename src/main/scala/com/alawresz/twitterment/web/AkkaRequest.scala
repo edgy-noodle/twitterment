@@ -20,7 +20,7 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
     headers = List(authHeader)
   )
 
-  def getTweets(): Tweet = {
+  def getTweet(id: Int): Tweet = {
     var tweet: Tweet = Tweet(TweetData("", ""))
 
     val responseFuture = Http()
@@ -30,7 +30,7 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
       case Success(response) if response.status == StatusCodes.OK =>
         response.entity.dataBytes.runForeach { chunk =>
           val tweetFuture = Unmarshal(chunk).to[Tweet]
-          tweet = processTweet(tweetFuture)
+          tweet = tweetFuture.value.get.get
         }
       case Success(response) =>
         response.discardEntityBytes()
@@ -43,7 +43,26 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
     tweet
   }
 
-  private def processTweet(tweetFuture: Future[Tweet]): Tweet = {
-    tweetFuture.value.get.get
+  def getTweets(): Tweet = {
+    var tweet: Tweet = Tweet(TweetData("", ""))
+
+    val responseFuture = Http()
+      .singleRequest(request)
+
+    responseFuture.transformWith {
+      case Success(response) if response.status == StatusCodes.OK =>
+        response.entity.dataBytes.runForeach { chunk =>
+          val tweetFuture = Unmarshal(chunk).to[Tweet]
+          tweet = tweetFuture.value.get.get
+        }
+      case Success(response) =>
+        response.discardEntityBytes()
+        logger.error(response.toString())
+        Future.failed(new Exception(response.toString()))
+      case Failure(exception) =>
+        logger.error(exception.toString())
+        Future.failed(exception)
+    }
+    tweet
   }
 }

@@ -16,12 +16,14 @@ import java.{util => ju}
 
 class AkkaSpout(config: TwitterConfig) extends BaseRichSpout {
   var _collector: SpoutOutputCollector = _
+  var _counter: Int = _
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
     declarer.declare(new Fields("key", "value"))
 
   override def open(conf: ju.Map[String,Object], context: TopologyContext, collector: SpoutOutputCollector): Unit = {
     _collector = collector
+    _counter = 20
   }
 
   override def nextTuple(): Unit = {
@@ -29,7 +31,8 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout {
       config.bearerToken,
       config.url
     )
-    val tweet = request.getTweets()
+    val tweet = request.getTweet(_counter)
+    _counter += 1
     println(tweet)
     _collector.emit(new Values("tweet", tweet.toString()))
   }
