@@ -4,14 +4,13 @@ import scala.concurrent.duration._
 import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
-import scala.util.Try
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.unmarshalling.Unmarshal
 
-case class AkkaRequest(token: String, url: String) extends AkkaSystem with TweetJsonSupport {
+case class AkkaRequest(token: String, url: String) extends AkkaSystem with TweetSerialization {
   import system.dispatcher
   
   private val authHeader = RawHeader("Authorization", s"Bearer $token")

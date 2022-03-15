@@ -7,6 +7,8 @@ import pureconfig.generic.auto._
 
 trait Configuration extends StrictLogging {
   lazy val config = ConfigSource.default.loadOrThrow[Config]
+  lazy val stormConfig = config.stormConfig
+  lazy val twitterConfig = config.twitterConfig
 
   def printConfig(): Unit = {
     logger.info(s"""
@@ -20,9 +22,9 @@ trait Configuration extends StrictLogging {
       |----------------------------------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                 
       | TWITTERMENT Configuration:
       |----------------------------------------------------------------------------------------------------------------------------
-      | tweet-spout: ${config.stormConfig.tweetsSpout}
-      | tweet-sink: ${config.stormConfig.tweetsIn}
-      | twitter: ${config.twitterConfig}
+      | in-spout: ${stormConfig.inSpout}
+      | in-bolt: ${stormConfig.inBolt}
+      | twitter: ${twitterConfig}
       |----------------------------------------------------------------------------------------------------------------------------
       |""".stripMargin)
   }

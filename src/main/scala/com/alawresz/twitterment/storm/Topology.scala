@@ -1,12 +1,13 @@
 package com.alawresz.twitterment.storm
 
-import org.apache.storm.LocalCluster
-import org.apache.storm.generated.StormTopology
-import org.apache.storm.Config
-import org.apache.storm.topology.TopologyBuilder
 import com.alawresz.twitterment.storm.spouts._
 import com.alawresz.twitterment.configuration.Configuration
 import com.alawresz.twitterment.storm.bolts.TweetsInBolt
+
+import org.apache.storm.Config
+import org.apache.storm.LocalCluster
+import org.apache.storm.generated.StormTopology
+import org.apache.storm.topology.TopologyBuilder
 import org.apache.storm.tuple.Fields
 import org.apache.storm.tuple.Values
 
@@ -17,14 +18,14 @@ object Topology extends Configuration {
     val akkaSpout = AkkaSpout()
     builder
       .setSpout("akkaSpout", akkaSpout)
-
-    val tweetsInBolt = TweetsInBolt(config.stormConfig.tweetsIn)
+    val inBolt = TweetsInBolt(stormConfig.inBolt)
     builder
-      .setBolt("tweetsInBolt", tweetsInBolt)
+      .setBolt("inBolt", inBolt)
       .shuffleGrouping("akkaSpout")
-    // val tweetSpout = TweetSpout(config.stormConfig.tweetsSpout)
-    // builder
-    //   .setSpout(tweetSpout.toString(), tweetSpout)
+
+    val inSpout = TweetSpout(stormConfig.inSpout)
+    builder
+      .setSpout("inSpout", inSpout)
 
     builder.createTopology()
   }

@@ -12,12 +12,11 @@ import org.apache.storm.task.TopologyContext
 import org.apache.storm.tuple.Fields
 import org.apache.storm.tuple.Values
 
+import com.typesafe.scalalogging.LazyLogging
 import java.{util => ju}
 import scala.util.Success
 import scala.util.Failure
 import scala.concurrent.ExecutionContext.Implicits.global
-import com.typesafe.scalalogging.LazyLogging
-import akka.protobufv3.internal.Value
 
 class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {
   var _collector: SpoutOutputCollector = _
@@ -44,7 +43,7 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {
         println(tweet)
         _collector.emit(new Values("tweet", tweet.data.toString()), _counter)
     }
-    Thread.sleep(10000)
+    Thread.sleep(3000)
     _counter += 1
   }
 }
