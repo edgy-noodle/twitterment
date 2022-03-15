@@ -7,6 +7,7 @@ val akkaVer = "2.6.8"
 val akkaHttpVer = "10.2.9"
 val stormVer = "2.3.0"
 val kafkaVer = "3.1.0"
+val langDetectVer = "0.6"
 
 // Dependencies
 val pureconfig = Seq(
@@ -32,6 +33,9 @@ val storm = Seq(
 ).map(_ % stormVer)
 val kafka = Seq(
   "org.apache.kafka" % "kafka-clients" % kafkaVer
+)
+val langDetect = Seq(
+  "com.optimaize.languagedetector" % "language-detector" % langDetectVer
 )
 
 val dependencies = 
