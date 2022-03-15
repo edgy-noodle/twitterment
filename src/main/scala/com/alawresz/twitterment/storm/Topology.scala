@@ -16,12 +16,12 @@ object Topology extends Configuration {
 
     val akkaSpout = AkkaSpout()
     builder
-      .setSpout("spout", akkaSpout)
+      .setSpout("akkaSpout", akkaSpout)
 
     val tweetsInBolt = TweetsInBolt(config.stormConfig.tweetsIn)
     builder
-      .setBolt("tweets-in", tweetsInBolt)
-      .shuffleGrouping("spout")
+      .setBolt("tweetsInBolt", tweetsInBolt)
+      .shuffleGrouping("akkaSpout")
     // val tweetSpout = TweetSpout(config.stormConfig.tweetsSpout)
     // builder
     //   .setSpout(tweetSpout.toString(), tweetSpout)
