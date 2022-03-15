@@ -1,10 +1,10 @@
 package com.alawresz.twitterment.storm.bolts
 
-case class TweetSinkConfig(
+case class InBoltConfig(
   bootstrapServers: List[String],
   clientId: String,
   topic: String,
   batchSize: Int,
-  lingerMs: Short,
+  lingerMs: Long,
   acks: String
 )
