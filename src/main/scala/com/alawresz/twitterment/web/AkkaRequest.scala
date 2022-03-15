@@ -9,6 +9,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.unmarshalling.Unmarshal
+import scala.concurrent.Await
 
 case class AkkaRequest(token: String, url: String) extends AkkaSystem with TweetJsonSupport {
   import system.dispatcher
@@ -21,17 +22,13 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
   )
 
   def getTweet(id: Int): Tweet = {
-    var tweet: Tweet = Tweet(TweetData("", ""))
-
     val responseFuture = Http()
       .singleRequest(request)
 
-    responseFuture.transformWith {
+    val tweetFuture = responseFuture.transformWith {
       case Success(response) if response.status == StatusCodes.OK =>
-        response.entity.dataBytes.runForeach { chunk =>
-          val tweetFuture = Unmarshal(chunk).to[Tweet]
-          tweet = tweetFuture.value.get.get
-        }
+        val tweet = Unmarshal(response.entity).to[Tweet]
+        tweet
       case Success(response) =>
         response.discardEntityBytes()
         logger.error(response.toString())
@@ -40,29 +37,29 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
         logger.error(exception.toString())
         Future.failed(exception)
     }
-    tweet
+
+    Await.result(tweetFuture, 5.seconds)
   }
+  // def getTweets(): Tweet = {
+  //   var tweet: Tweet = Tweet(TweetData("", ""))
 
-  def getTweets(): Tweet = {
-    var tweet: Tweet = Tweet(TweetData("", ""))
+  //   val responseFuture = Http()
+  //     .singleRequest(request)
 
-    val responseFuture = Http()
-      .singleRequest(request)
-
-    responseFuture.transformWith {
-      case Success(response) if response.status == StatusCodes.OK =>
-        response.entity.dataBytes.runForeach { chunk =>
-          val tweetFuture = Unmarshal(chunk).to[Tweet]
-          tweet = tweetFuture.value.get.get
-        }
-      case Success(response) =>
-        response.discardEntityBytes()
-        logger.error(response.toString())
-        Future.failed(new Exception(response.toString()))
-      case Failure(exception) =>
-        logger.error(exception.toString())
-        Future.failed(exception)
-    }
-    tweet
-  }
+  //   responseFuture.transformWith {
+  //     case Success(response) if response.status == StatusCodes.OK =>
+  //       response.entity.dataBytes.runForeach { chunk =>
+  //         val tweetFuture = Unmarshal(chunk).to[Tweet]
+  //         tweet = tweetFuture.value.get.get
+  //       }
+  //     case Success(response) =>
+  //       response.discardEntityBytes()
+  //       logger.error(response.toString())
+  //       Future.failed(new Exception(response.toString()))
+  //     case Failure(exception) =>
+  //       logger.error(exception.toString())
+  //       Future.failed(exception)
+  //   }
+  //   tweet
+  // }
 }

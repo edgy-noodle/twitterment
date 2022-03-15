@@ -29,12 +29,12 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout {
   override def nextTuple(): Unit = {
     val request = AkkaRequest(
       config.bearerToken,
-      config.url
+      config.url + _counter
     )
     val tweet = request.getTweet(_counter)
+    _collector.emit(new Values("tweet", tweet.toString()), _counter)
+    Thread.sleep(10000)
     _counter += 1
-    println(tweet)
-    _collector.emit(new Values("tweet", tweet.toString()))
   }
 }
 
