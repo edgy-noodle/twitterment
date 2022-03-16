@@ -1,21 +1,21 @@
 package com.alawresz.twitterment.storm.bolts
 
 import org.apache.storm.topology.IRichBolt
+import java.{util => ju}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.Tuple
 import org.apache.storm.topology.OutputFieldsDeclarer
+import java.{util => ju}
 import org.apache.storm.tuple.Fields
 
-import java.{util => ju}
-
-class LanguageBolt extends IRichBolt {
+class LangCountBolt extends IRichBolt {
   var _collector: OutputCollector   = _
-  var _conf: ju.Map[String,Object]  = _
+  var _conf: ju.Map[String, Object] = _
 
   override def prepare(conf: ju.Map[String,Object], context: TopologyContext, 
     collector: OutputCollector): Unit = {
-      _collector  = collector
-      _conf       = conf
+      _collector = collector
+      _conf = conf
     }
 
   override def execute(tuple: Tuple): Unit = {
@@ -27,8 +27,13 @@ class LanguageBolt extends IRichBolt {
   }
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields("tweet", "lang"))
+    declarer.declare(new Fields())
 
   override def getComponentConfiguration(): ju.Map[String,Object] =
     _conf
+}
+
+object LangCountBolt {
+  def apply(): LangCountBolt =
+    new LangCountBolt()
 }

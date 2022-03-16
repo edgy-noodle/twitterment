@@ -6,7 +6,7 @@ import org.apache.storm.kafka.spout.KafkaSpoutConfig
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 
-object TweetSpout {
+object InSpout {
   private val kafkaSpoutConfig = (config: InSpoutConfig) =>
     new KafkaSpoutConfig
       .Builder[String, Tweet](config.bootstrapServers.mkString(","), config.topic)
