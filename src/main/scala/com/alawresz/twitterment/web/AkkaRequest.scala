@@ -10,7 +10,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.unmarshalling.Unmarshal
 
-case class AkkaRequest(token: String, url: String) extends AkkaSystem with TweetSerialization {
+case class AkkaRequest(token: String, url: String) extends TweetSerialization with AkkaSystem {
   import system.dispatcher
   
   private val authHeader = RawHeader("Authorization", s"Bearer $token")

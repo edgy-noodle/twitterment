@@ -1,10 +1,9 @@
 package com.alawresz.twitterment.web
 
-import com.typesafe.scalalogging.StrictLogging
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 
-trait AkkaSystem extends StrictLogging {
+trait AkkaSystem {
   implicit val system       = ActorSystem()
   implicit val materializer = ActorMaterializer()
 
