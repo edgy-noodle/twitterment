@@ -11,7 +11,8 @@ object App extends Configuration {
     } else {
       val twitterConfig = TwitterConfig(args(0), args(1), args(2), args(3))
       printStreamConfig(twitterConfig)
-      val tweetStream = TweetStream(twitterConfig)
+      val tweetProducer = ???
+      val tweetStream = TweetStream(twitterConfig, tweetProducer)
     }
   }
 }
