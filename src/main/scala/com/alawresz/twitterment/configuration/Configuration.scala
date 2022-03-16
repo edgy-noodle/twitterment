@@ -9,8 +9,9 @@ trait Configuration extends StrictLogging {
   lazy val config             = ConfigSource.default.loadOrThrow[Config]
   lazy val stormConfig        = config.stormConfig
 
-  lazy val line = "-" * 150
-  lazy val configWithLogo = (twitterConfig: String) => s"""
+  lazy val line = "-" * 120
+  lazy val configWithLogo = (twitterConfig: String) =>
+    s"""
     |  _________  ___       __   ___  _________  _________  _______   ________  _____ ______   _______   ________   _________   
     | |\\___   ___\\\\  \\     |\\  \\|\\  \\|\\___   ___\\\\___   ___\\\\  ___ \\ |\\   __  \\|\\   _ \\  _   \\|\\  ___ \\ |\\   ___  \\|\\___   ___\\ 
     | \\|___ \\  \\_\\ \\  \\    \\ \\  \\ \\  \\|___ \\  \\_\\|___ \\  \\_\\ \\   __/|\\ \\  \\|\\  \\ \\  \\\\\\__\\ \\  \\ \\   __/|\\ \\  \\\\ \\  \\|___ \\  \\_| 
@@ -25,14 +26,14 @@ trait Configuration extends StrictLogging {
     | in-bolt:  ${stormConfig.inBolt}
     | twitter:  ${twitterConfig}
     |$line
-    |"""
+    |""".stripMargin
 
   def printAkkaConfig(): Unit = {
     val twitterConfig = config.twitterConfig
-    logger.info(configWithLogo(twitterConfig.toString()).stripMargin)
+    logger.info(configWithLogo(twitterConfig.toString()))
   }
 
   def printStreamConfig(twitterConfig: TwitterConfig): Unit = {
-    logger.info(configWithLogo(twitterConfig.toString()).stripMargin)
+    logger.info(configWithLogo(twitterConfig.toString()))
   }
 }
