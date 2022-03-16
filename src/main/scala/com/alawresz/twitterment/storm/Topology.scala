@@ -10,21 +10,22 @@ import org.apache.storm.topology.TopologyBuilder
 import org.apache.storm.tuple.{Fields, Values}
 
 object Topology extends Configuration {
-  def buildTopology(): StormTopology = {
-    val builder = new TopologyBuilder()
+  private val builder = new TopologyBuilder()
 
+  private def produceTweets(): Unit = {
     val akkaSpout = AkkaSpout()
     builder
       .setSpout("akkaSpout", akkaSpout)
+
+    // Producing to tweets.in topic
+    // Implemented just for learning purposes
     val inBolt = TweetsInBolt(stormConfig.inBolt)
     builder
       .setBolt("inBolt", inBolt)
       .shuffleGrouping("akkaSpout")
+  }
 
-    val inSpout = InSpout(stormConfig.inSpout)
-    builder
-      .setSpout("inSpout", inSpout)
-
+  private def getLanguages(): Unit = {
     val langDetectBolt = LangDetectBolt()
     builder
       .setBolt("langDetectBolt", langDetectBolt)
@@ -34,7 +35,18 @@ object Topology extends Configuration {
     builder
       .setBolt("langCountBolt", langCountBolt)
       .fieldsGrouping("langDetectBolt", new Fields("lang"))
+  }
 
+  def buildTopology(): StormTopology = {
+    produceTweets()
+
+    // Consuming from tweets.in topic
+    val inSpout = InSpout(stormConfig.inSpout)
+    builder
+      .setSpout("inSpout", inSpout)
+
+    getLanguages()
+    
     builder.createTopology()
   }
   

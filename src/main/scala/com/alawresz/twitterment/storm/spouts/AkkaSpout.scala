@@ -23,8 +23,8 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with TweetSerializa
 
   override def open(conf: ju.Map[String,Object], context: TopologyContext, 
     collector: SpoutOutputCollector): Unit = {
-      _collector = collector
-      _counter = 20
+      _collector  = collector
+      _counter    = 20
     }
 
   override def nextTuple(): Unit = {
