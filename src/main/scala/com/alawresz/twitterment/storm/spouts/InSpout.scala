@@ -1,8 +1,8 @@
 package com.alawresz.twitterment.storm.spouts
 
 import com.alawresz.twitterment.web.Tweet
-import org.apache.storm.kafka.spout.KafkaSpout
-import org.apache.storm.kafka.spout.KafkaSpoutConfig
+
+import org.apache.storm.kafka.spout.{KafkaSpout, KafkaSpoutConfig}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 

@@ -4,13 +4,10 @@ import com.alawresz.twitterment.storm.spouts._
 import com.alawresz.twitterment.storm.bolts._
 import com.alawresz.twitterment.configuration.Configuration
 
-import org.apache.storm.Config
-import org.apache.storm.LocalCluster
+import org.apache.storm.{Config, LocalCluster}
 import org.apache.storm.generated.StormTopology
 import org.apache.storm.topology.TopologyBuilder
-import org.apache.storm.tuple.Fields
-import org.apache.storm.tuple.Values
-
+import org.apache.storm.tuple.{Fields, Values}
 
 object Topology extends Configuration {
   def buildTopology(): StormTopology = {

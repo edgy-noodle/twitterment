@@ -1,21 +1,17 @@
 package com.alawresz.twitterment.storm.spouts
 
-import com.alawresz.twitterment.web.Tweet
-import com.alawresz.twitterment.web.AkkaRequest
-import com.alawresz.twitterment.configuration.Configuration
-import com.alawresz.twitterment.configuration.TwitterConfig
+import com.alawresz.twitterment.web.{Tweet, AkkaRequest}
+import com.alawresz.twitterment.configuration.{Configuration, TwitterConfig}
 
 import org.apache.storm.topology.base.BaseRichSpout
 import org.apache.storm.topology.OutputFieldsDeclarer
 import org.apache.storm.spout.SpoutOutputCollector
 import org.apache.storm.task.TopologyContext
-import org.apache.storm.tuple.Fields
-import org.apache.storm.tuple.Values
+import org.apache.storm.tuple.{Fields, Values}
 
 import com.typesafe.scalalogging.LazyLogging
 import java.{util => ju}
-import scala.util.Success
-import scala.util.Failure
+import scala.util.{Success, Failure}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {

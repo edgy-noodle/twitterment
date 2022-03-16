@@ -1,19 +1,14 @@
 package com.alawresz.twitterment.storm.bolts
 
-import org.apache.storm.topology.IRichBolt
+import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
-import org.apache.storm.tuple.Tuple
-import org.apache.storm.topology.OutputFieldsDeclarer
-import org.apache.storm.tuple.Fields
+import org.apache.storm.tuple.{Tuple, Values, Fields}
 
 import java.{util => ju}
 import com.optimaize.langdetect.profiles.LanguageProfileReader
-import com.optimaize.langdetect.LanguageDetectorBuilder
+import com.optimaize.langdetect.{LanguageDetector, LanguageDetectorBuilder}
 import com.optimaize.langdetect.ngram.NgramExtractors
-import com.optimaize.langdetect.LanguageDetector
-import com.optimaize.langdetect.text.CommonTextObjectFactories
-import com.optimaize.langdetect.text.TextObjectFactory
-import org.apache.storm.tuple.Values
+import com.optimaize.langdetect.text.{TextObjectFactory, CommonTextObjectFactories}
 
 class LangDetectBolt extends IRichBolt {
   var _collector: OutputCollector     = _
