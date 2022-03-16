@@ -10,6 +10,8 @@ object TweetStream {
     val builder = new ConfigurationBuilder()
     builder.setOAuthConsumerKey(twitterConfig.consumerKey)
     builder.setOAuthConsumerSecret(twitterConfig.consumerSecret)
+    builder.setOAuthAccessToken(twitterConfig.accessToken)
+    builder.setOAuthAccessTokenSecret(twitterConfig.tokenSecret)
     builder.build()
   }
 
