@@ -9,7 +9,14 @@ import org.apache.storm.tuple.Fields
 import java.{util => ju}
 
 class LanguageBolt extends IRichBolt {
-  override def prepare(x$1: ju.Map[String,Object], x$2: TopologyContext, x$3: OutputCollector): Unit = ???
+  var _collector: OutputCollector   = _
+  var _conf: ju.Map[String,Object]  = _
+
+  override def prepare(conf: ju.Map[String,Object], context: TopologyContext, 
+    collector: OutputCollector): Unit = {
+      _collector  = collector
+      _conf       = conf
+    }
 
   override def execute(tuple: Tuple): Unit = {
 
@@ -22,7 +29,6 @@ class LanguageBolt extends IRichBolt {
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
     declarer.declare(new Fields("tweet", "lang"))
 
-  override def getComponentConfiguration(): ju.Map[String,Object] = {
-    ???
-  }
+  override def getComponentConfiguration(): ju.Map[String,Object] =
+    _conf
 }

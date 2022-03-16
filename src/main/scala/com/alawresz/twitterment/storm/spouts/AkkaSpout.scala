@@ -19,16 +19,17 @@ import scala.util.Failure
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {
-  var _collector: SpoutOutputCollector = _
-  var _counter: Int = _
+  var _collector: SpoutOutputCollector  = _
+  var _counter: Int                     = _
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
     declarer.declare(new Fields("key", "value"))
 
-  override def open(conf: ju.Map[String,Object], context: TopologyContext, collector: SpoutOutputCollector): Unit = {
-    _collector = collector
-    _counter = 20
-  }
+  override def open(conf: ju.Map[String,Object], context: TopologyContext, 
+    collector: SpoutOutputCollector): Unit = {
+      _collector = collector
+      _counter = 20
+    }
 
   override def nextTuple(): Unit = {
     val request = AkkaRequest(

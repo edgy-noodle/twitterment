@@ -15,8 +15,8 @@ case class AkkaRequest(token: String, url: String) extends AkkaSystem with Tweet
   
   private val authHeader = RawHeader("Authorization", s"Bearer $token")
   private val request = HttpRequest(
-    method = HttpMethods.GET,
-    uri = url,
+    method  = HttpMethods.GET,
+    uri     = url,
     headers = List(authHeader)
   )
 
