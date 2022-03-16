@@ -7,6 +7,6 @@ case class TweetData(id: String, text: String)
 case class Tweet(data: TweetData)
 
 trait TweetSerialization extends SprayJsonSupport {
-  implicit val tweetDataFormat = jsonFormat2(TweetData)
-  implicit val tweetFormat = jsonFormat1(Tweet)
+  implicit val tweetDataFormat  = jsonFormat2(TweetData)
+  implicit val tweetFormat      = jsonFormat1(Tweet)
 }

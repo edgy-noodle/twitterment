@@ -8,6 +8,7 @@ val akkaHttpVer = "10.2.9"
 val stormVer = "2.3.0"
 val kafkaVer = "3.1.0"
 val langDetectVer = "0.6"
+val circeVer = "0.14.1"
 
 // Dependencies
 val pureconfig = Seq(
@@ -37,6 +38,11 @@ val kafka = Seq(
 val langDetect = Seq(
   "com.optimaize.languagedetector" % "language-detector" % langDetectVer
 )
+val circe = Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-parser"
+).map(_ % circeVer)
 
 val dependencies = 
   pureconfig ++ 
@@ -44,7 +50,8 @@ val dependencies =
   test ++
   akka ++
   storm ++
-  kafka
+  kafka ++
+  langDetect
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
