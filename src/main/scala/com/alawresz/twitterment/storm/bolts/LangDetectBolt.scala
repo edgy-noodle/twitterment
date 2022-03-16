@@ -1,5 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
+import com.alawresz.twitterment.TweetModel.TweetSerialization
+
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
@@ -10,7 +12,7 @@ import com.optimaize.langdetect.{LanguageDetector, LanguageDetectorBuilder}
 import com.optimaize.langdetect.ngram.NgramExtractors
 import com.optimaize.langdetect.text.{TextObjectFactory, CommonTextObjectFactories}
 
-class LangDetectBolt extends IRichBolt {
+class LangDetectBolt extends IRichBolt with TweetSerialization {
   var _collector: OutputCollector     = _
   var _conf: ju.Map[String,Object]    = _
   var _langDetect: LanguageDetector   = _
@@ -29,11 +31,15 @@ class LangDetectBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet = tuple.getStringByField("value")
-    val text  = _textObject.forText(tweet)
-    val lang  = _langDetect.getProbabilities(text).get(0).getLocale().toString()
-
-    _collector.emit(tuple, new Values(tweet, lang))
+    val value = tuple.getBinaryByField("value")
+    deserialize(value) match {
+      case Some(tweet) =>
+        val text = _textObject.forText(tweet.text)
+        println(tweet.text)
+        val lang = _langDetect.getProbabilities(text).get(0).getLocale().toString()
+        _collector.emit(tuple, new Values(tweet, lang))
+      case None =>
+    }
   }
 
   override def cleanup(): Unit = {

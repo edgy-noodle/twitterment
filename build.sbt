@@ -51,7 +51,8 @@ val dependencies =
   akka ++
   storm ++
   kafka ++
-  langDetect
+  langDetect ++
+  circe
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
