@@ -3,6 +3,8 @@ package com.alawresz.twitterment.configuration
 import com.alawresz.twitterment.storm.StormConfig
 
 case class TwitterConfig(
+  consumerKey: String,
+  consumerSecret: String,
   bearerToken: String,
   url: String
 )

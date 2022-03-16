@@ -9,7 +9,7 @@ import org.apache.storm.generated.StormTopology
 import org.apache.storm.topology.TopologyBuilder
 import org.apache.storm.tuple.{Fields, Values}
 
-object Topology extends Configuration {
+object AkkaTopology extends Configuration {
   private val builder = new TopologyBuilder()
 
   private def produceTweets(): Unit = {

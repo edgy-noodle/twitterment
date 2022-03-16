@@ -9,6 +9,7 @@ val stormVer = "2.3.0"
 val kafkaVer = "3.1.0"
 val langDetectVer = "0.6"
 val circeVer = "0.14.1"
+val twitter4jVer = "4.0.7"
 
 // Dependencies
 val pureconfig = Seq(
@@ -43,6 +44,9 @@ val circe = Seq(
   "io.circe" %% "circe-generic",
   "io.circe" %% "circe-parser"
 ).map(_ % circeVer)
+val twitter4j = Seq(
+  "org.twitter4j" % "twitter4j-stream" % twitter4jVer
+)
 
 val dependencies = 
   pureconfig ++ 
@@ -52,7 +56,8 @@ val dependencies =
   storm ++
   kafka ++
   langDetect ++
-  circe
+  circe ++
+  twitter4j
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
