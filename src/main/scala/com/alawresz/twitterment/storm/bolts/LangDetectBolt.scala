@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.TweetModel.TweetSerialization.deserialize
+import com.alawresz.twitterment.TweetModel.TweetSerialization
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
@@ -12,7 +12,7 @@ import com.optimaize.langdetect.{LanguageDetector, LanguageDetectorBuilder}
 import com.optimaize.langdetect.ngram.NgramExtractors
 import com.optimaize.langdetect.text.{TextObjectFactory, CommonTextObjectFactories}
 
-class LangDetectBolt extends IRichBolt {
+class LangDetectBolt extends IRichBolt with TweetSerialization {
   var _collector: OutputCollector     = _
   var _conf: ju.Map[String,Object]    = _
   var _langDetect: LanguageDetector   = _

@@ -1,5 +1,6 @@
 package com.alawresz.twitterment.storm.spouts
 
+import com.alawresz.twitterment.TweetModel.TweetSerialization
 import com.alawresz.twitterment.web.AkkaRequest
 import com.alawresz.twitterment.configuration.{Configuration, TwitterConfig}
 
@@ -9,12 +10,11 @@ import org.apache.storm.spout.SpoutOutputCollector
 import org.apache.storm.task.TopologyContext
 import org.apache.storm.tuple.{Fields, Values}
 
-import com.typesafe.scalalogging.LazyLogging
 import java.{util => ju}
 import scala.util.{Success, Failure}
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {
+class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with TweetSerialization {
   var _collector: SpoutOutputCollector  = _
   var _counter: Int                     = _
 
@@ -37,7 +37,7 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {
       case Failure(exception) =>
         logger.error(exception.toString())
       case Success(tweet) =>
-        _collector.emit(new Values("tweet", tweet.data.serialized), _counter)
+        _collector.emit(new Values("tweet", serialize(tweet.data)), _counter)
     }
     Thread.sleep(3000)
     _counter += 1

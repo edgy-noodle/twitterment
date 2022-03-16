@@ -7,13 +7,10 @@ import io.circe.parser._
 import io.circe.syntax._
 
 object TweetModel {
-  case class TweetData(id: String, text: String) {
-    def serialized: Array[Byte] = 
-      TweetSerialization.serialize(this)
-  }
+  case class TweetData(id: String, text: String)
   case class Tweet(data: TweetData)
 
-  object TweetSerialization extends LazyLogging {
+  trait TweetSerialization extends LazyLogging {
     def serialize(tweet: TweetData): Array[Byte] =
       tweet.asJson.noSpaces.getBytes()
 
