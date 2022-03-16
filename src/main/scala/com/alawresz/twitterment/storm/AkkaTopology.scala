@@ -52,7 +52,7 @@ object AkkaTopology extends Configuration {
   }
   
   def startTopology(): Unit = {
-    val cluster = new LocalCluster()
+    val cluster = new LocalCluster("localhost", 2181)
     val clusterConfig = new Config()
     val topology = buildTopology()
     // clusterConfig.setDebug(true)
