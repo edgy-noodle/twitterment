@@ -2,7 +2,7 @@ package com.alawresz.twitterment
 
 import com.alawresz.twitterment.configuration.TwitterConfig
 
-import twitter4j.conf.{Configuration, ConfigurationBuilder}
+import twitter4j.conf.ConfigurationBuilder
 import twitter4j.{TwitterStreamFactory, TwitterStream}
 
 object TweetStream {

@@ -5,10 +5,17 @@ import com.typesafe.scalalogging.StrictLogging
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
 
+case class TwitterConfig(
+  consumerKey: String,
+  consumerSecret: String,
+  accessToken: String,
+  tokenSecret: String
+)
+
 trait Configuration extends StrictLogging {
-  lazy val config         = ConfigSource.default.loadOrThrow[Config]
-  lazy val stormConfig    = config.stormConfig
-  lazy val twitterConfig  = config.twitterConfig
+  lazy val config             = ConfigSource.default.loadOrThrow[Config]
+  lazy val stormConfig        = config.stormConfig
+  lazy val twitterConfig      = config.twitterConfig
 
   def printConfig(): Unit = {
     logger.info(s"""
