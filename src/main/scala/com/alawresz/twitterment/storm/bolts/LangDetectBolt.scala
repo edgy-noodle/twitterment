@@ -35,10 +35,10 @@ class LangDetectBolt extends IRichBolt with TweetSerialization {
     deserialize(value) match {
       case Some(tweet) =>
         val text = _textObject.forText(tweet.text)
-        println(tweet.text)
         val lang = _langDetect.getProbabilities(text).get(0).getLocale().toString()
         _collector.emit(tuple, new Values(tweet, lang))
       case None =>
+        logger.error(s"Couldn't deserialize ${value.toString()}!")
     }
   }
 
