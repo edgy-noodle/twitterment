@@ -22,8 +22,7 @@ class LangDetectBolt extends IRichBolt {
       
       _collector  = collector
       _conf       = conf
-      _langDetect = LanguageDetectorBuilder
-        .create(NgramExtractors.standard())
+      _langDetect = LanguageDetectorBuilder.create(NgramExtractors.standard())
         .withProfiles(languageProfiles)
         .build()
       _textObject = CommonTextObjectFactories.forDetectingOnLargeText()
@@ -32,8 +31,7 @@ class LangDetectBolt extends IRichBolt {
   override def execute(tuple: Tuple): Unit = {
     val tweet = tuple.getStringByField("value")
     val text  = _textObject.forText(tweet)
-    val lang  = _langDetect.getProbabilities(text).get(0).getLocale()
-    println(lang)
+    val lang  = _langDetect.getProbabilities(text).get(0).getLocale().toString()
 
     _collector.emit(tuple, new Values(tweet, lang))
   }
