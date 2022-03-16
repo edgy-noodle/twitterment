@@ -1,5 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
+import com.alawresz.twitterment.TweetModel.TweetSerialization.deserialize
+
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
@@ -29,11 +31,15 @@ class LangDetectBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet = tuple.getStringByField("value")
-    val text  = _textObject.forText(tweet)
-    val lang  = _langDetect.getProbabilities(text).get(0).getLocale().toString()
-
-    _collector.emit(tuple, new Values(tweet, lang))
+    val value = tuple.getBinaryByField("value")
+    deserialize(value) match {
+      case Some(tweet) =>
+        val text = _textObject.forText(tweet.text)
+        println(tweet.text)
+        val lang = _langDetect.getProbabilities(text).get(0).getLocale().toString()
+        _collector.emit(tuple, new Values(tweet, lang))
+      case None =>
+    }
   }
 
   override def cleanup(): Unit = {

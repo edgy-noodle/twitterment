@@ -1,5 +1,7 @@
 package com.alawresz.twitterment.web
 
+import com.alawresz.twitterment.TweetModel.Tweet
+
 import scala.concurrent.duration._
 import scala.concurrent.Future
 import scala.util.Failure
@@ -10,7 +12,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.unmarshalling.Unmarshal
 
-case class AkkaRequest(token: String, url: String) extends TweetSerialization with AkkaSystem {
+case class AkkaRequest(token: String, url: String) extends TweetJsonSupport with AkkaSystem {
   import system.dispatcher
   
   private val authHeader = RawHeader("Authorization", s"Bearer $token")

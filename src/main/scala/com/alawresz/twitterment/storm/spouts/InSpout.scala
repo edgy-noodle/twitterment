@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.spouts
 
-import com.alawresz.twitterment.web.Tweet
+import com.alawresz.twitterment.TweetModel.Tweet
 
 import org.apache.storm.kafka.spout.{KafkaSpout, KafkaSpoutConfig}
 import org.apache.kafka.clients.consumer.ConsumerConfig

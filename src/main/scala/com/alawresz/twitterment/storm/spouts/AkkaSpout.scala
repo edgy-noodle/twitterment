@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.spouts
 
-import com.alawresz.twitterment.web.{Tweet, AkkaRequest}
+import com.alawresz.twitterment.web.AkkaRequest
 import com.alawresz.twitterment.configuration.{Configuration, TwitterConfig}
 
 import org.apache.storm.topology.base.BaseRichSpout
@@ -37,8 +37,7 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with LazyLogging {
       case Failure(exception) =>
         logger.error(exception.toString())
       case Success(tweet) =>
-        println(tweet)
-        _collector.emit(new Values("tweet", tweet.data.toString()), _counter)
+        _collector.emit(new Values("tweet", tweet.data.serialized), _counter)
     }
     Thread.sleep(3000)
     _counter += 1

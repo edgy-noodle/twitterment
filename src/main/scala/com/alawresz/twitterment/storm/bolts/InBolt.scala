@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.web.Tweet
+import com.alawresz.twitterment.TweetModel.Tweet
 
 import org.apache.storm.kafka.bolt.KafkaBolt
 import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper
