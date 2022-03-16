@@ -22,13 +22,14 @@ case class AkkaRequest(token: String, url: String) extends TweetJsonSupport with
     headers = List(authHeader)
   )
 
-  def getTweet(): Future[Tweet] = {
+  def processTweetWith(f: Future[Tweet] => Unit): Unit = {
     val responseFuture = Http()
       .singleRequest(request)
 
-    val tweetFuture = responseFuture.transformWith {
+    responseFuture.andThen {
       case Success(response) if response.status == StatusCodes.OK =>
-        Unmarshal(response.entity).to[Tweet]
+        val tweetFuture = Unmarshal(response.entity).to[Tweet]
+        f(tweetFuture)
       case Success(response) =>
         response.discardEntityBytes()
         logger.error(response.toString())
@@ -36,8 +37,8 @@ case class AkkaRequest(token: String, url: String) extends TweetJsonSupport with
       case Failure(exception) =>
         logger.error(exception.toString())
         Future.failed(exception)
+    }.andThen {
+      case _ => system.terminate()
     }
-
-    tweetFuture
   }
 }
