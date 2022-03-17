@@ -18,12 +18,12 @@ object AkkaTopology extends Configuration {
       .setSpout("akkaSpout", akkaSpout)
 
     // Implemented just for learning purposes
-    val inBolt = TweetsInBolt(stormConfig.inBolt)
+    val inBolt = TweetsInBolt(kafkaConfig.producer)
     builder
       .setBolt("inBolt", inBolt)
       .shuffleGrouping("akkaSpout")
 
-    logger.info(s"Produding tweets to ${stormConfig.inBolt.topic} topic")
+    logger.info(s"Produding tweets to ${kafkaConfig.producer.topic} topic")
   }
 
   private def getLanguages(): Unit = {
@@ -41,10 +41,10 @@ object AkkaTopology extends Configuration {
   def buildTopology(): StormTopology = {
     produceTweets()
 
-    val inSpout = InSpout(stormConfig.inSpout)
+    val inSpout = InSpout(kafkaConfig.consumer)
     builder
       .setSpout("inSpout", inSpout)
-    logger.info(s"Consuming from ${stormConfig.inSpout.topic} topic")
+    logger.info(s"Consuming from ${kafkaConfig.consumer.topic} topic")
 
     getLanguages()
 

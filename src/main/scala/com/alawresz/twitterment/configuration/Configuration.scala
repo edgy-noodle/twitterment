@@ -7,7 +7,7 @@ import pureconfig.generic.auto._
 
 trait Configuration extends StrictLogging {
   lazy val config             = ConfigSource.default.loadOrThrow[Config]
-  lazy val stormConfig        = config.stormConfig
+  lazy val kafkaConfig        = config.kafkaConfig
 
   lazy val line = "-" * 120
   lazy val configWithLogo = (twitterConfig: String) =>
@@ -22,8 +22,8 @@ trait Configuration extends StrictLogging {
     |$line
     | TWITTERMENT Configuration:
     |$line
-    | in-spout: ${stormConfig.inSpout}
-    | in-bolt:  ${stormConfig.inBolt}
+    | in-spout: ${kafkaConfig.consumer}
+    | in-bolt:  ${kafkaConfig.producer}
     | twitter:  ${twitterConfig}
     |$line
     |""".stripMargin
