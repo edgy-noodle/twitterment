@@ -1,6 +1,6 @@
 import com.alawresz.twitterment.configuration.Configuration
 import com.alawresz.twitterment.configuration.TwitterConfig
-import com.alawresz.twitterment.storm.AkkaTopology
+import com.alawresz.twitterment.storm.akkatopology._
 import com.alawresz.twitterment.TweetStream
 
 object App extends Configuration {

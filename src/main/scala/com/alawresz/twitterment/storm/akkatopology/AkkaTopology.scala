@@ -1,4 +1,4 @@
-package com.alawresz.twitterment.storm
+package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.storm.spouts._
 import com.alawresz.twitterment.storm.bolts._

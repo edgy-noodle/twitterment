@@ -1,4 +1,4 @@
-package com.alawresz.twitterment.storm.bolts
+package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.configuration.ProdConfig
 import com.alawresz.twitterment.TweetModel.Tweet
@@ -10,7 +10,6 @@ import org.apache.kafka.common.serialization.StringSerializer
 import org.apache.kafka.common.serialization.ByteArraySerializer
 
 import java.util.Properties
-
 
 object TweetsInBolt {
   private val producerProps = (config: ProdConfig) => {

@@ -12,7 +12,7 @@ The app will use Akka to access artificial tweets via web requests to Twitter AP
 The app will use Twitter4J stream and produce to a Kafka topic using.
 
 ## How to run
-- ### Kafka
+- ### Start Kafka & Zookeeper
 ```bash
 cd docker
 docker-compose up

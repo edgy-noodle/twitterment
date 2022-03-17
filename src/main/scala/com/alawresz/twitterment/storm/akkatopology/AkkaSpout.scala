@@ -1,4 +1,4 @@
-package com.alawresz.twitterment.storm.spouts
+package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.TweetModel._
 import com.alawresz.twitterment.web.AkkaRequest
