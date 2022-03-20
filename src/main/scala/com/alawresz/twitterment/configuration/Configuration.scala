@@ -33,7 +33,7 @@ trait Configuration extends StrictLogging {
     logger.info(configWithLogo(twitterConfig.toString()))
   }
 
-  def printStreamConfig(twitterConfig: TwitterConfig): Unit = {
+  def printTw4jConfig(twitterConfig: TwitterConfig): Unit = {
     logger.info(configWithLogo(twitterConfig.toString()))
   }
 }

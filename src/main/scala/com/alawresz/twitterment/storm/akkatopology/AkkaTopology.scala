@@ -1,6 +1,5 @@
 package com.alawresz.twitterment.storm.akkatopology
 
-import com.alawresz.twitterment.storm.spouts._
 import com.alawresz.twitterment.storm.bolts._
 import com.alawresz.twitterment.configuration.Configuration
 
@@ -52,7 +51,7 @@ object AkkaTopology extends Configuration {
   }
   
   def startTopology(): Unit = {
-    val cluster = new LocalCluster("localhost", 2181)
+    val cluster = new LocalCluster()
     val clusterConfig = new Config()
     val topology = buildTopology()
     // clusterConfig.setDebug(true)

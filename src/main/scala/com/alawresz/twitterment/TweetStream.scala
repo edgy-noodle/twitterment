@@ -17,13 +17,13 @@ object TweetStream {
     builder.build()
   }
 
-  private val listener = (tweetProducer: Array[Byte] => Unit) => 
+  private val listener = (tweetProducer: TweetProducer) => 
     new StatusListener() with TweetSerialization {
       override def onException(exception: Exception): Unit =
         logger.error(exception.toString())
       override def onStatus(status: Status): Unit = {
         val tweet = TweetData(status.getId().toString(), status.getText())
-        tweetProducer(serialize(tweet))
+        tweetProducer.sendTweet(serialize(tweet))
       }
 
       override def onDeletionNotice(arg0: StatusDeletionNotice): Unit = {}
@@ -32,7 +32,7 @@ object TweetStream {
       override def onStallWarning(arg0: StallWarning): Unit = {}
     }
 
-  def apply(config: TwitterConfig, tweetProducer: Array[Byte] => Unit): TwitterStream = {
+  def apply(config: TwitterConfig, tweetProducer: TweetProducer): TwitterStream = {
     val stream = new TwitterStreamFactory(twitterStreamConfig(config)).getInstance()
     stream.addListener(listener(tweetProducer))
     stream.sample()

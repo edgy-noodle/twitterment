@@ -13,7 +13,18 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.clients.producer.Callback
 import org.apache.kafka.clients.producer.RecordMetadata
 
-object TweetProducer extends Configuration{
+class TweetProducer(props: Properties, topic: String) {
+  private val producer = new KafkaProducer[String, Array[Byte]](props)
+
+  def sendTweet(tweet: Array[Byte]): Unit = {
+    val message = new ProducerRecord[String, Array[Byte]](
+      topic, "tweet", tweet
+    )
+    producer.send(message, TweetProducer.ProducerCallback)
+  }
+}
+
+object TweetProducer extends Configuration {
   private val producerProps = (config: ProdConfig) => {
     val props = new Properties()
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.bootstrapServers.mkString(","))
@@ -26,13 +37,9 @@ object TweetProducer extends Configuration{
     props
   }
 
-  def apply(tweet: Array[Byte]) = {
+  def apply(): TweetProducer = {
     val config = kafkaConfig.producer
-    val producer = new KafkaProducer[String, Array[Byte]](producerProps(config))
-    val message = new ProducerRecord[String, Array[Byte]](
-      config.topic, "tweet", tweet
-    )
-    producer.send(message, ProducerCallback)
+    new TweetProducer(producerProps(config), config.topic)
   }
 
   private object ProducerCallback extends Callback {
