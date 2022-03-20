@@ -1,4 +1,4 @@
-package com.alawresz.twitterment.storm.akkatopology
+package com.alawresz.twitterment.storm
 
 import com.alawresz.twitterment.configuration.ConsConfig
 import com.alawresz.twitterment.TweetModel.Tweet

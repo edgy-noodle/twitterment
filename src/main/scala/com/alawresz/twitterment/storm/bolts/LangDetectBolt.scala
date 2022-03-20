@@ -11,6 +11,7 @@ import com.optimaize.langdetect.profiles.LanguageProfileReader
 import com.optimaize.langdetect.{LanguageDetector, LanguageDetectorBuilder}
 import com.optimaize.langdetect.ngram.NgramExtractors
 import com.optimaize.langdetect.text.{TextObjectFactory, CommonTextObjectFactories}
+import scala.util.Try
 
 class LangDetectBolt extends IRichBolt with TweetSerialization {
   var _collector: OutputCollector     = _
@@ -34,9 +35,12 @@ class LangDetectBolt extends IRichBolt with TweetSerialization {
     val value = tuple.getBinaryByField("value")
     deserialize(value) match {
       case Some(tweet) =>
-        val text = _textObject.forText(tweet.text)
-        val lang = _langDetect.getProbabilities(text).get(0).getLocale().toString()
-        _collector.emit(tuple, new Values(tweet, lang))
+        Try {
+          for {
+            text <- Option(_textObject.forText(tweet.text))
+            lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
+          } yield _collector.emit(tuple, new Values(tweet, lang))
+        }
       case None =>
         logger.error(s"Couldn't deserialize ${value.toString()}!")
     }
