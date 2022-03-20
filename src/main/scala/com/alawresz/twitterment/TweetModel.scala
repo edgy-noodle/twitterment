@@ -22,7 +22,7 @@ object TweetModel {
           Some(tweet)
         case Left(error) =>
           logger.error(error.toString())
-          None
+          Option.empty
       }
     }
   }
