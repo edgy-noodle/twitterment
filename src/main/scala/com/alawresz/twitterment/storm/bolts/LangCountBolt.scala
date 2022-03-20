@@ -22,7 +22,9 @@ class LangCountBolt extends IRichBolt {
   override def execute(tuple: Tuple): Unit = {
     val lang = tuple.getStringByField("lang")
     _counts(lang) += 1
-    _counts.foreach(println)
+    println("-"*120)
+    _counts.foreach(print)
+    println("\n"+"-"*120)
   }
 
   override def cleanup(): Unit = {

@@ -1,5 +1,6 @@
 package com.alawresz.twitterment.storm.akkatopology
 
+import com.alawresz.twitterment.storm.BaseTopology
 import com.alawresz.twitterment.storm.bolts._
 import com.alawresz.twitterment.configuration.Configuration
 
@@ -8,9 +9,7 @@ import org.apache.storm.generated.StormTopology
 import org.apache.storm.topology.TopologyBuilder
 import org.apache.storm.tuple.{Fields, Values}
 
-object AkkaTopology extends Configuration {
-  private val builder = new TopologyBuilder()
-
+object AkkaTopology extends BaseTopology {
   private def produceTweets(): Unit = {
     val akkaSpout = AkkaSpout()
     builder
@@ -25,36 +24,8 @@ object AkkaTopology extends Configuration {
     logger.info(s"Produding tweets to ${kafkaConfig.producer.topic} topic")
   }
 
-  private def getLanguages(): Unit = {
-    val langDetectBolt = LangDetectBolt()
-    builder
-      .setBolt("langDetectBolt", langDetectBolt)
-      .shuffleGrouping("inSpout")
-
-    val langCountBolt = LangCountBolt()
-    builder
-      .setBolt("langCountBolt", langCountBolt)
-      .fieldsGrouping("langDetectBolt", new Fields("lang"))
-  }
-
-  def buildTopology(): StormTopology = {
+  def apply(): Unit = {
     produceTweets()
-
-    val inSpout = InSpout(kafkaConfig.consumer)
-    builder
-      .setSpout("inSpout", inSpout)
-    logger.info(s"Consuming from ${kafkaConfig.consumer.topic} topic")
-
-    getLanguages()
-
-    builder.createTopology()
-  }
-  
-  def startTopology(): Unit = {
-    val cluster = new LocalCluster()
-    val clusterConfig = new Config()
-    val topology = buildTopology()
-    // clusterConfig.setDebug(true)
-    cluster.submitTopology("twitterment", clusterConfig, topology)
+    startTopology("AkkaTopology")
   }
 }

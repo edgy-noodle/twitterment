@@ -43,7 +43,7 @@ class AkkaSpout(config: TwitterAkkaConfig) extends BaseRichSpout with TweetSeria
       config.url + _counter
     )
     request.processTweetWith(emitTweet)
-    Thread.sleep(1000)
+    Thread.sleep(100)
     _counter += 1
   }
 }

@@ -8,7 +8,7 @@ object App extends Configuration {
   def main(args: Array[String]): Unit = {
     if(args.length == 0) {
       printAkkaConfig()
-      AkkaTopology.startTopology()
+      AkkaTopology()
     } else {
       val twitterConfig = TwitterConfig(args(0), args(1), args(2), args(3))
       printTw4jConfig(twitterConfig)
