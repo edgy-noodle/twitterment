@@ -34,9 +34,10 @@ class LangDetectBolt extends IRichBolt with TweetSerialization {
     val value = tuple.getBinaryByField("value")
     deserialize(value) match {
       case Some(tweet) =>
-        val text = _textObject.forText(tweet.text)
-        val lang = _langDetect.getProbabilities(text).get(0).getLocale().toString()
-        _collector.emit(tuple, new Values(tweet, lang))
+        for {
+          text <- Option(_textObject.forText(tweet.text))
+          lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
+        } yield _collector.emit(tuple, new Values(tweet, lang))
       case None =>
         logger.error(s"Couldn't deserialize ${value.toString()}!")
     }
