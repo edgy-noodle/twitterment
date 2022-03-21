@@ -1,21 +1,22 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.TweetModel.TweetSerialization
+import com.alawresz.twitterment.TweetModel.TweetData
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
 
-import java.{util => ju}
 import com.optimaize.langdetect.profiles.LanguageProfileReader
 import com.optimaize.langdetect.{LanguageDetector, LanguageDetectorBuilder}
 import com.optimaize.langdetect.ngram.NgramExtractors
 import com.optimaize.langdetect.text.{TextObjectFactory, CommonTextObjectFactories}
+
+import java.{util => ju}
 import scala.util.Try
 
-class LangDetectBolt extends IRichBolt with TweetSerialization {
+class LangDetectBolt extends IRichBolt {
   var _collector: OutputCollector     = _
-  var _conf: ju.Map[String,Object]    = _
+  var _conf: ju.Map[String, Object]   = _
   var _langDetect: LanguageDetector   = _
   var _textObject: TextObjectFactory  = _
 
@@ -32,17 +33,12 @@ class LangDetectBolt extends IRichBolt with TweetSerialization {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val value = tuple.getBinaryByField("value")
-    deserialize(value) match {
-      case Some(tweet) =>
-        Try {
-          for {
-            text <- Option(_textObject.forText(tweet.text))
-            lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
-          } yield _collector.emit(tuple, new Values(tweet, lang))
-        }
-      case None =>
-        logger.error(s"Couldn't deserialize ${value.toString()}!")
+    val tweet = tuple.getValueByField("tweet").asInstanceOf[TweetData]
+    Try {
+      for {
+        text <- Option(_textObject.forText(tweet.text))
+        lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
+      } yield _collector.emit(tuple, new Values(tweet, lang))
     }
   }
 

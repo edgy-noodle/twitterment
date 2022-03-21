@@ -15,18 +15,30 @@ trait BaseTopology extends Configuration {
     builder
       .setSpout("inSpout", inSpout)
     logger.info(s"Consuming from ${kafkaConfig.consumer.topic} topic")
+
+    val deserializeTweetBolt = DeserializeTweetBolt()
+    builder
+      .setBolt("deserializeTweetBolt", deserializeTweetBolt)
+      .shuffleGrouping("inSpout")
   }
 
   private def getLanguages(): Unit = {
     val langDetectBolt = LangDetectBolt()
     builder
       .setBolt("langDetectBolt", langDetectBolt)
-      .shuffleGrouping("inSpout")
+      .shuffleGrouping("deserializeTweetBolt")
 
     val langCountBolt = LangCountBolt()
     builder
       .setBolt("langCountBolt", langCountBolt)
       .fieldsGrouping("langDetectBolt", new Fields("lang"))
+  }
+
+  private def getSentiments(): Unit = {
+    val sentimentAnalyzeBolt = SentimentAnalyzeBolt()
+    builder
+      .setBolt("sentimentAnalyzeBolt", sentimentAnalyzeBolt)
+      .shuffleGrouping("deserializeTweetBolt")
   }
 
   def startTopology(name: String): Unit = {
