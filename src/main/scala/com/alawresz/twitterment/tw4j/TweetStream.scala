@@ -1,7 +1,8 @@
-package com.alawresz.twitterment
+package com.alawresz.twitterment.tw4j
 
-import com.alawresz.twitterment.configuration.TwitterConfig
 import com.alawresz.twitterment.TweetModel._
+import com.alawresz.twitterment.TweetProducer
+import com.alawresz.twitterment.configuration.TwitterConfig
 
 import com.typesafe.scalalogging.LazyLogging
 import twitter4j.conf.ConfigurationBuilder

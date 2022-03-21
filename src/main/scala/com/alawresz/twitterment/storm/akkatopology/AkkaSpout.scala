@@ -1,7 +1,7 @@
 package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.TweetModel._
-import com.alawresz.twitterment.web.AkkaRequest
+import com.alawresz.twitterment.akka.AkkaRequest
 import com.alawresz.twitterment.configuration.{Configuration, TwitterAkkaConfig}
 
 import org.apache.storm.topology.base.BaseRichSpout

@@ -1,4 +1,4 @@
-package com.alawresz.twitterment.web
+package com.alawresz.twitterment.akka
 
 import com.alawresz.twitterment.TweetModel._
 import spray.json.DefaultJsonProtocol._

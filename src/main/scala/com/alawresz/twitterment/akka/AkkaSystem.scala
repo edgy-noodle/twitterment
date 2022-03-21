@@ -1,4 +1,4 @@
-package com.alawresz.twitterment.web
+package com.alawresz.twitterment.akka
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
