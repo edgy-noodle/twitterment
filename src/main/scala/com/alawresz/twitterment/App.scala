@@ -1,3 +1,5 @@
+package com.alawresz.twitterment
+
 import com.alawresz.twitterment.configuration.Configuration
 import com.alawresz.twitterment.configuration.TwitterConfig
 import com.alawresz.twitterment.storm.akkatopology.AkkaTopology
