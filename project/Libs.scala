@@ -13,6 +13,7 @@ object Libs {
   private val langDetectVer = "0.6"
   private val circeVer = "0.14.1"
   private val twitter4jVer = "4.0.7"
+  private val stanfordNlpVer = "4.4.0"
 
   // Dependencies
   val pureconfig = Seq(
@@ -49,5 +50,8 @@ object Libs {
   ).map(_ % circeVer)
   val twitter4j = Seq(
     "org.twitter4j" % "twitter4j-stream" % twitter4jVer
+  )
+  val stanfordNlp = Seq(
+    "edu.stanford.nlp" % "stanford-corenlp" % stanfordNlpVer
   )
 }

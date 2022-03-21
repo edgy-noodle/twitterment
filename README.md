@@ -13,6 +13,7 @@ Twitterment is using the following technologies:
 - Circe
 - Twitter4J
 - Language Detector by Optimaize
+- Stanford CoreNLP
 
 ---
 
