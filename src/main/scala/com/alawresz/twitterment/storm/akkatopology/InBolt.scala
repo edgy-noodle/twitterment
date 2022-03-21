@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.ByteArraySerializer
 
 import java.util.Properties
 
-object TweetsInBolt {
+object InBolt {
   private val producerProps = (config: ProdConfig) => {
     val props = new Properties()
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.bootstrapServers.mkString(","))
