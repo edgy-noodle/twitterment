@@ -1,5 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
+import com.alawresz.twitterment.TweetModel.TweetData
+
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
@@ -7,7 +9,7 @@ import org.apache.storm.tuple.{Tuple, Values, Fields}
 import collection.{mutable => mt}
 import java.{util => ju}
 
-class LangCountBolt extends IRichBolt {
+class SentimentCountBolt extends IRichBolt {
   var _collector: OutputCollector   = _
   var _conf: ju.Map[String, Object] = _
   var _counts: mt.Map[String, Int]  = _
@@ -20,8 +22,8 @@ class LangCountBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val lang = tuple.getStringByField("lang")
-    _counts(lang) += 1
+    val sentiment = tuple.getStringByField("sentiment")
+    _counts(sentiment) += 1
     println("-"*120)
     _counts.foreach(print)
     println("\n"+"-"*120)
@@ -38,7 +40,7 @@ class LangCountBolt extends IRichBolt {
     _conf
 }
 
-object LangCountBolt {
-  def apply(): LangCountBolt =
-    new LangCountBolt()
+object SentimentCountBolt {
+  def apply(): SentimentCountBolt =
+    new SentimentCountBolt()
 }

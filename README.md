@@ -3,7 +3,7 @@
 ![twitter ci](https://github.com/edgy-noodle/twitter/actions/workflows/ci.yaml/badge.svg)
 
 ### TWITTER SENTIMENT ANALYSIS APP
-A simple Scala app for analyzing tweet sentiments. The tweets will be analyzed globally with a sample provided via Twitter API. Analysis using additional aggregation rules will be implemented in the future. Integration with Hadoop and Grafana will also be added.
+A simple Scala app for analyzing tweets. The sample provided via Twitter API is first analyzed to detect the language. Afterwards the tweets in English will undergo further analysis to establish their sentiment. Analyses with additional filtering rules will be implemented in the future. Integration with Hadoop and Grafana will also be added to save and visualize the data.
 
 Twitterment is using the following technologies:
 - Kafka
@@ -13,6 +13,7 @@ Twitterment is using the following technologies:
 - Circe
 - Twitter4J
 - Language Detector by Optimaize
+- Stanford CoreNLP
 
 ---
 

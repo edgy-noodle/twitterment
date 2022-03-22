@@ -9,7 +9,8 @@ val dependencies =
   kafka ++
   langDetect ++
   circe ++
-  twitter4j
+  twitter4j ++
+  stanfordNlp
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
