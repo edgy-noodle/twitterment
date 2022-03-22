@@ -6,8 +6,7 @@ import com.alawresz.twitterment.TweetModel.Tweet
 import org.apache.storm.kafka.bolt.KafkaBolt
 import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper
 import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.common.serialization.StringSerializer
-import org.apache.kafka.common.serialization.ByteArraySerializer
+import org.apache.kafka.common.serialization.{StringSerializer, ByteArraySerializer}
 
 import java.util.Properties
 

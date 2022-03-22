@@ -3,15 +3,11 @@ package com.alawresz.twitterment
 import com.alawresz.twitterment.configuration.ProdConfig
 import com.alawresz.twitterment.configuration.Configuration
 
-import java.util.Properties
-
 import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.common.serialization.StringSerializer
-import org.apache.kafka.common.serialization.ByteArraySerializer
-import org.apache.kafka.clients.producer.KafkaProducer
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.clients.producer.Callback
-import org.apache.kafka.clients.producer.RecordMetadata
+import org.apache.kafka.common.serialization.{StringSerializer, ByteArraySerializer}
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord, Callback, RecordMetadata}
+
+import java.util.Properties
 
 class TweetProducer(props: Properties, topic: String) {
   private val producer = new KafkaProducer[String, Array[Byte]](props)

@@ -1,11 +1,12 @@
 package com.alawresz.twitterment.nlp
 
-import java.util.Properties
 import edu.stanford.nlp.pipeline.StanfordCoreNLP
-import edu.stanford.nlp.ling.CoreAnnotations
 import edu.stanford.nlp.pipeline.CoreNLPProtos.Sentiment
+import edu.stanford.nlp.ling.CoreAnnotations
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations
+
+import java.util.Properties
 
 class SentimentAnalyzer(pipeline: StanfordCoreNLP) {
   def findSentiment(text: String): Sentiment = {

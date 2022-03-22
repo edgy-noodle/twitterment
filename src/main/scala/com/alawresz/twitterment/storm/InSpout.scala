@@ -5,8 +5,7 @@ import com.alawresz.twitterment.TweetModel.Tweet
 
 import org.apache.storm.kafka.spout.{KafkaSpout, KafkaSpoutConfig}
 import org.apache.kafka.clients.consumer.ConsumerConfig
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.kafka.common.serialization.ByteArrayDeserializer
+import org.apache.kafka.common.serialization.{StringDeserializer, ByteArrayDeserializer}
 
 object InSpout {
   private val kafkaSpoutConfig = (config: ConsConfig) =>
