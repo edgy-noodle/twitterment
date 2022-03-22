@@ -6,11 +6,12 @@ import pureconfig.ConfigSource
 import pureconfig.generic.auto._
 
 trait Configuration extends StrictLogging {
-  lazy val config             = ConfigSource.default.loadOrThrow[Config]
-  lazy val kafkaConfig        = config.kafkaConfig
+  lazy val config         = ConfigSource.default.loadOrThrow[Config]
+  lazy val kafkaConfig    = config.kafkaConfig
+  lazy val twitterConfig  = config.twitterConfig
 
-  lazy val line = "-" * 120
-  lazy val configWithLogo = (twitterConfig: String) =>
+  lazy val line           = "-" * 120
+  lazy val configWithLogo =
     s"""
     |  _________  ___       __   ___  _________  _________  _______   ________  _____ ______   _______   ________   _________   
     | |\\___   ___\\\\  \\     |\\  \\|\\  \\|\\___   ___\\\\___   ___\\\\  ___ \\ |\\   __  \\|\\   _ \\  _   \\|\\  ___ \\ |\\   ___  \\|\\___   ___\\ 
@@ -28,12 +29,7 @@ trait Configuration extends StrictLogging {
     |$line
     |""".stripMargin
 
-  def printAkkaConfig(): Unit = {
-    val twitterConfig = config.twitterConfig
-    logger.info(configWithLogo(twitterConfig.toString()))
-  }
-
-  def printTw4jConfig(twitterConfig: TwitterConfig): Unit = {
-    logger.info(configWithLogo(twitterConfig.toString()))
+  def printConfig(): Unit = {
+    logger.info(configWithLogo)
   }
 }

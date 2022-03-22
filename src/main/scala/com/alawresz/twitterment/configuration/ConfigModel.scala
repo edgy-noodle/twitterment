@@ -1,15 +1,12 @@
 package com.alawresz.twitterment.configuration
 
 case class TwitterConfig(
-  consumerKey: String,
-  consumerSecret: String,
-  accessToken: String,
-  tokenSecret: String
-)
-
-case class TwitterAkkaConfig(
   bearerToken: String,
-  url: String
+  url: String,
+  consumerKey: String = "",
+  consumerSecret: String = "",
+  accessToken: String = "",
+  tokenSecret: String = ""
 )
 
 case class ConsConfig(
@@ -30,4 +27,4 @@ case class ProdConfig(
 
 case class KafkaConfig(producer: ProdConfig, consumer: ConsConfig)
 
-case class Config(kafkaConfig: KafkaConfig, twitterConfig: TwitterAkkaConfig)
+case class Config(kafkaConfig: KafkaConfig, twitterConfig: TwitterConfig)

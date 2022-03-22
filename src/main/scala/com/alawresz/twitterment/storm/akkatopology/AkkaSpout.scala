@@ -2,7 +2,7 @@ package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.TweetModel._
 import com.alawresz.twitterment.akka.AkkaRequest
-import com.alawresz.twitterment.configuration.{Configuration, TwitterAkkaConfig}
+import com.alawresz.twitterment.configuration.{Configuration, TwitterConfig}
 
 import org.apache.storm.topology.base.BaseRichSpout
 import org.apache.storm.topology.OutputFieldsDeclarer
@@ -15,7 +15,7 @@ import scala.util.{Success, Failure}
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class AkkaSpout(config: TwitterAkkaConfig) extends BaseRichSpout with TweetSerialization {
+class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with TweetSerialization {
   var _collector: SpoutOutputCollector  = _
   var _counter: Int                     = _
 

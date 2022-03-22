@@ -7,13 +7,13 @@ import com.alawresz.twitterment.storm.tw4jtopology.Tw4jTopology
 
 object App extends Configuration {
   def main(args: Array[String]): Unit = {
-    if(args.length == 0) {
-      printAkkaConfig()
-      AkkaTopology()
-    } else {
-      val twitterConfig = TwitterConfig(args(0), args(1), args(2), args(3))
-      printTw4jConfig(twitterConfig)
-      Tw4jTopology(twitterConfig)
+    printConfig()
+    twitterConfig match {
+      case TwitterConfig(_, _, consumerKey, consumerSecret, accessToken, tokenSecret)
+        if consumerKey == "" || consumerSecret == "" || accessToken == "" || tokenSecret == "" =>
+          AkkaTopology()
+      case _ =>
+        Tw4jTopology()
     }
   }
 }

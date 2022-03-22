@@ -2,7 +2,6 @@ package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.storm.BaseTopology
 import com.alawresz.twitterment.storm.bolts._
-import com.alawresz.twitterment.configuration.Configuration
 
 import org.apache.storm.{Config, LocalCluster}
 import org.apache.storm.generated.StormTopology
