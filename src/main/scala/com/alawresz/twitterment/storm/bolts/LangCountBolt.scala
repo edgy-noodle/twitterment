@@ -3,8 +3,8 @@ package com.alawresz.twitterment.storm.bolts
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
-import collection.{mutable => mt}
 
+import collection.{mutable => mt}
 import java.{util => ju}
 
 class LangCountBolt extends IRichBolt {

@@ -1,36 +1,32 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.nlp.SentimentAnalyzer
 import com.alawresz.twitterment.TweetModel.TweetData
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
 
+import collection.{mutable => mt}
 import java.{util => ju}
 
-class SentimentAnalyzeBolt extends IRichBolt {
+class SentimentCountBolt extends IRichBolt {
   var _collector: OutputCollector   = _
   var _conf: ju.Map[String, Object] = _
-  var _analyzer: SentimentAnalyzer  = _
+  var _counts: mt.Map[String, Int]  = _
 
   override def prepare(conf: ju.Map[String,Object], context: TopologyContext, 
     collector: OutputCollector): Unit = {
       _collector  = collector
-      _conf       = conf 
-      _analyzer   = SentimentAnalyzer()
+      _conf       = conf
+      _counts     = mt.Map[String, Int]().withDefaultValue(0)
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet     = tuple.getValueByField("tweet").asInstanceOf[TweetData]
-    val lang      = tuple.getStringByField("lang")
-    lang match {
-      case "en" =>
-        val sentiment = _analyzer.findSentiment(tweet.text).toString()
-        println((tweet, sentiment))
-        _collector.emit(tuple, new Values(tweet, sentiment))
-      case _    =>
-    }
+    val sentiment = tuple.getStringByField("sentiment")
+    _counts(sentiment) += 1
+    println("-"*120)
+    _counts.foreach(print)
+    println("\n"+"-"*120)
   }
 
   override def cleanup(): Unit = {
@@ -38,13 +34,13 @@ class SentimentAnalyzeBolt extends IRichBolt {
   }
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields("tweet", "sentiment"))
+    declarer.declare(new Fields())
 
   override def getComponentConfiguration(): ju.Map[String,Object] =
-    _conf  
+    _conf
 }
 
-object SentimentAnalyzeBolt {
-  def apply(): SentimentAnalyzeBolt =
-    new SentimentAnalyzeBolt()
+object SentimentCountBolt {
+  def apply(): SentimentCountBolt =
+    new SentimentCountBolt()
 }

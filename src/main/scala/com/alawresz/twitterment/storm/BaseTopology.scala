@@ -38,7 +38,12 @@ trait BaseTopology extends Configuration {
     val sentimentAnalyzeBolt = SentimentAnalyzeBolt()
     builder
       .setBolt("sentimentAnalyzeBolt", sentimentAnalyzeBolt)
-      .shuffleGrouping("deserializeTweetBolt")
+      .shuffleGrouping("langDetectBolt")
+    
+    val sentimentCountBolt = SentimentCountBolt()
+    builder
+      .setBolt("sentimentCountBolt", sentimentCountBolt)
+      .fieldsGrouping("sentimentAnalyzeBolt", new Fields("sentiment"))
   }
 
   def startTopology(name: String): Unit = {
@@ -49,6 +54,7 @@ trait BaseTopology extends Configuration {
     val topology = {
       getTweets()
       getLanguages()
+      getSentiments()
       
       builder.createTopology()
     }

@@ -52,6 +52,6 @@ object Libs {
     "org.twitter4j" % "twitter4j-stream" % twitter4jVer
   )
   val stanfordNlp = Seq(
-    "edu.stanford.nlp" % "stanford-corenlp" % stanfordNlpVer
+    "edu.stanford.nlp" % "stanford-corenlp" % stanfordNlpVer artifacts (Artifact("stanford-corenlp", "models"), Artifact("stanford-corenlp"))
   )
 }
