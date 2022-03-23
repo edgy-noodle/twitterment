@@ -8,7 +8,6 @@ object Libs {
   private val akkaVer = "2.6.8"
   private val akkaHttpVer = "10.2.9"
   private val stormVer = "2.3.0"
-  private val stormMetricsVer = "3.2.6"
   private val kafkaVer = "3.1.0"
   private val langDetectVer = "0.6"
   private val circeVer = "0.14.1"
@@ -36,11 +35,6 @@ object Libs {
     "org.apache.storm" % "storm-client",
     "org.apache.storm" % "storm-kafka-client"
   ).map(_ % stormVer)
-  val stormMetrics = Seq(
-    "io.dropwizard.metrics" % "metrics-core",
-    "io.dropwizard.metrics" % "metrics-graphite",
-    "io.dropwizard.metrics" % "metrics-jvm"
-  ).map(_ % stormMetricsVer)
   val kafka = Seq(
     "org.apache.kafka" % "kafka-clients" % kafkaVer
   )

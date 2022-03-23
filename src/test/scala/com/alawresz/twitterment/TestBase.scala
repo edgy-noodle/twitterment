@@ -11,11 +11,11 @@ import org.scalatest.matchers.should.Matchers
 
 trait TestBase extends AnyWordSpec with Matchers with Configuration {
   printConfig()
-  twitterConfig match {
-    case TwitterConfig(_, _, consumerKey, consumerSecret, accessToken, tokenSecret)
-      if consumerKey == "" || consumerSecret == "" || accessToken == "" || tokenSecret == "" =>
-        AkkaTopology()
-    case _ =>
-      Tw4jTopology()
-  }
+  // twitterConfig match {
+  //   case TwitterConfig(_, _, consumerKey, consumerSecret, accessToken, tokenSecret)
+  //     if consumerKey == "" || consumerSecret == "" || accessToken == "" || tokenSecret == "" =>
+  //       AkkaTopology()
+  //   case _ =>
+  //     Tw4jTopology()
+  // }
 }

@@ -5,7 +5,6 @@ val dependencies =
   logging ++
   akka ++
   storm ++
-  stormMetrics ++
   kafka ++
   langDetect ++
   circe ++
