@@ -5,7 +5,7 @@
 ---
 
 ### TWITTER SENTIMENT ANALYSIS APP
-A simple Scala app for analyzing tweets. The sample provided via Twitter API is first analyzed to detect the language. Afterwards the tweets in English will undergo further analysis to establish their sentiment. Analyses with additional filtering rules will be implemented in the future. Integration with Hadoop and Grafana will also be added to save and visualize the data.
+A simple Scala app for analyzing tweets. The sample provided via Twitter API is first analyzed to detect the language. Afterwards the tweets in English will undergo further analysis to establish their sentiment. Analyses with additional filtering rules will be implemented in the future. Integration with Redis and Grafana will also be added to save and visualize the data.
 
 Twitterment is using the following technologies:
 - Kafka

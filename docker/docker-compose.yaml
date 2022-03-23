@@ -1,5 +1,15 @@
 version: '3'
 services:
+  redis:
+    image: bitnami/redis:6.0.16
+    hostname: redis
+    container_name: redis
+    ports:
+    - 6379:6379
+    environment:
+      ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - C:\Redis:/bitnami/redis/data
   zoo:
     image: bitnami/zookeeper:3.6.3
     hostname: zoo
