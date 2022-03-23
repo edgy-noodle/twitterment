@@ -1,6 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
 import com.alawresz.twitterment.TweetModel.TweetData
+import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
@@ -33,12 +34,15 @@ class LangDetectBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet = tuple.getValueByField("tweet").asInstanceOf[TweetData]
+    val tweet = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
     Try {
       for {
         text <- Option(_textObject.forText(tweet.text))
         lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
-      } yield _collector.emit(tuple, new Values(tweet, lang))
+      } {
+      _collector.emit(tuple, new Values(tweet, lang))
+      _collector.ack(tuple)
+      }
     }
   }
 
@@ -47,7 +51,7 @@ class LangDetectBolt extends IRichBolt {
   }
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields("tweet", "lang"))
+    declarer.declare(new Fields(TupleModel.tweet, TupleModel.lang))
 
   override def getComponentConfiguration(): ju.Map[String,Object] =
     _conf

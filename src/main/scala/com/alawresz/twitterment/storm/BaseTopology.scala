@@ -2,6 +2,7 @@ package com.alawresz.twitterment.storm
 
 import com.alawresz.twitterment.configuration.Configuration
 import com.alawresz.twitterment.storm.bolts._
+import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.{Config, LocalCluster}
 import org.apache.storm.topology.TopologyBuilder
@@ -31,7 +32,7 @@ trait BaseTopology extends Configuration {
     val langCountBolt = LangCountBolt()
     builder
       .setBolt("langCountBolt", langCountBolt)
-      .fieldsGrouping("langDetectBolt", new Fields("lang"))
+      .fieldsGrouping("langDetectBolt", new Fields(TupleModel.lang))
   }
 
   private def getSentiments(): Unit = {
@@ -43,7 +44,7 @@ trait BaseTopology extends Configuration {
     val sentimentCountBolt = SentimentCountBolt()
     builder
       .setBolt("sentimentCountBolt", sentimentCountBolt)
-      .fieldsGrouping("sentimentAnalyzeBolt", new Fields("sentiment"))
+      .fieldsGrouping("sentimentAnalyzeBolt", new Fields(TupleModel.sentiment))
   }
 
   def startTopology(name: String): Unit = {

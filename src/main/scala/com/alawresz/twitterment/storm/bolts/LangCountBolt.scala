@@ -1,5 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
+import com.alawresz.twitterment.storm.TupleModel
+
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
@@ -20,7 +22,7 @@ class LangCountBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val lang = tuple.getStringByField("lang")
+    val lang = tuple.getStringByField(TupleModel.lang)
     _counts(lang) += 1
     println("-"*120)
     _counts.foreach(print)
@@ -31,8 +33,9 @@ class LangCountBolt extends IRichBolt {
     // no cleanup needed
   }
 
-  override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields())
+  override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit = {
+    // no output
+  }
 
   override def getComponentConfiguration(): ju.Map[String,Object] =
     _conf

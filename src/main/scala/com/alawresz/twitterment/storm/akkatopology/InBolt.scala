@@ -2,6 +2,7 @@ package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.configuration.ProdConfig
 import com.alawresz.twitterment.TweetModel.Tweet
+import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.kafka.bolt.KafkaBolt
 import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper
@@ -22,11 +23,14 @@ object InBolt {
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, classOf[ByteArraySerializer])
     props
   }
+  private val fieldsMapper = new FieldNameBasedTupleToKafkaMapper[String, Array[Byte]](
+    TupleModel.key, TupleModel.value
+  )
 
-  def apply(config: ProdConfig): KafkaBolt[String, String] = {
-    new KafkaBolt[String, String]
+  def apply(config: ProdConfig): KafkaBolt[String, Array[Byte]] = {
+    new KafkaBolt[String, Array[Byte]]
       .withTopicSelector(config.topic)
       .withProducerProperties(producerProps(config))
-      .withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("key", "value"))
+      .withTupleToKafkaMapper(fieldsMapper)
   }
 }
