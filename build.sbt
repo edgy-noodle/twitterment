@@ -3,14 +3,16 @@ import Libs._
 val dependencies = 
   pureconfig ++ 
   logging ++
-  scalatest ++
   akka ++
   storm ++
+  stormMetrics ++
   kafka ++
   langDetect ++
   circe ++
   twitter4j ++
-  stanfordNlp
+  stanfordNlp ++
+  scalatest ++
+  embeddedKafka
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
