@@ -9,6 +9,7 @@ import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.{StringSerializer, ByteArraySerializer}
 
 import java.util.Properties
+import com.alawresz.twitterment.storm.TupleModel
 
 object InBolt {
   private val producerProps = (config: ProdConfig) => {
@@ -22,11 +23,14 @@ object InBolt {
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, classOf[ByteArraySerializer])
     props
   }
+  private val fieldsMapper = new FieldNameBasedTupleToKafkaMapper[String, Array[Byte]](
+    TupleModel.key, TupleModel.value
+  )
 
-  def apply(config: ProdConfig): KafkaBolt[String, String] = {
-    new KafkaBolt[String, String]
+  def apply(config: ProdConfig): KafkaBolt[String, Array[Byte]] = {
+    new KafkaBolt[String, Array[Byte]]
       .withTopicSelector(config.topic)
       .withProducerProperties(producerProps(config))
-      .withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("key", "value"))
+      .withTupleToKafkaMapper(fieldsMapper)
   }
 }
