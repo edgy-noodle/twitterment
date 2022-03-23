@@ -23,8 +23,11 @@ class DeserializeTweetBolt extends IRichBolt with TweetSerialization {
     deserialize(value) match {
       case Some(tweet) =>
         _collector.emit(tuple, new Values(tweet))
+        _collector.ack(tuple)
       case None =>
-        logger.error(s"Couldn't deserialize ${value.toString()}!")
+        logger.error(s"Couldn't deserialize ${value}!")
+        // No need to process if the value can't be deserialized
+        _collector.ack(tuple)
     }
   }
 

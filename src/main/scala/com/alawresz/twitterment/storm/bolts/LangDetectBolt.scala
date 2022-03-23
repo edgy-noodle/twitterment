@@ -38,7 +38,10 @@ class LangDetectBolt extends IRichBolt {
       for {
         text <- Option(_textObject.forText(tweet.text))
         lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
-      } yield _collector.emit(tuple, new Values(tweet, lang))
+      } {
+      _collector.emit(tuple, new Values(tweet, lang))
+      _collector.ack(tuple)
+      }
     }
   }
 

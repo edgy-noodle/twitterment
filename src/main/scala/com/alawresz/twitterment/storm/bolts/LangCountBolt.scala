@@ -31,8 +31,9 @@ class LangCountBolt extends IRichBolt {
     // no cleanup needed
   }
 
-  override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields())
+  override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit = {
+    // no output
+  }
 
   override def getComponentConfiguration(): ju.Map[String,Object] =
     _conf

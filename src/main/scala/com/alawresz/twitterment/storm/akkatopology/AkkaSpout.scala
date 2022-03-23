@@ -24,7 +24,12 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with TweetSerializa
       case Failure(exception) =>
         logger.error(exception.toString())
       case Success(tweet) =>
-        _collector.emit(new Values("tweet", serialize(tweet.data)), _counter)
+        tweet match {
+          case Tweet(data: TweetData) =>
+            _collector.emit(new Values("tweet", serialize(data)), _counter)
+          case _ =>
+            logger.error(s"Couldn't deserialize ${tweet}!")
+        }
     }
   }
 
