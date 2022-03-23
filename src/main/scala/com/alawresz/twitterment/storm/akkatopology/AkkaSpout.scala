@@ -1,6 +1,7 @@
 package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.TweetModel._
+import com.alawresz.twitterment.storm.TupleModel
 import com.alawresz.twitterment.akka.AkkaRequest
 import com.alawresz.twitterment.configuration.{Configuration, TwitterConfig}
 
@@ -8,7 +9,7 @@ import org.apache.storm.topology.base.BaseRichSpout
 import org.apache.storm.topology.OutputFieldsDeclarer
 import org.apache.storm.spout.SpoutOutputCollector
 import org.apache.storm.task.TopologyContext
-import org.apache.storm.tuple.{Fields, Values}
+import org.apache.storm.tuple.Values
 
 import java.{util => ju}
 import scala.util.{Success, Failure}
@@ -34,7 +35,7 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with TweetSerializa
   }
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields("key", "value"))
+    declarer.declare(TupleModel.default)
 
   override def open(conf: ju.Map[String,Object], context: TopologyContext, 
     collector: SpoutOutputCollector): Unit = {

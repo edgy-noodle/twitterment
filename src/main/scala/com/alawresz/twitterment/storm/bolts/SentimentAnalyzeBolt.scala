@@ -1,6 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
 import com.alawresz.twitterment.TweetModel.TweetData
+import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
@@ -55,8 +56,8 @@ class SentimentAnalyzeBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet     = tuple.getValueByField("tweet").asInstanceOf[TweetData]
-    val lang      = tuple.getStringByField("lang")
+    val tweet     = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
+    val lang      = tuple.getStringByField(TupleModel.lang)
     lang match {
       case "en" =>
         val sentiment = findSentiment(tweet.text).toString()
@@ -74,7 +75,7 @@ class SentimentAnalyzeBolt extends IRichBolt {
   }
 
   override def declareOutputFields(declarer: OutputFieldsDeclarer): Unit =
-    declarer.declare(new Fields("tweet", "sentiment"))
+    declarer.declare(new Fields(TupleModel.tweet, TupleModel.sentiment))
 
   override def getComponentConfiguration(): ju.Map[String,Object] =
     _conf  

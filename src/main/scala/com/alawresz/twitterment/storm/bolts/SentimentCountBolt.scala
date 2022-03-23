@@ -1,6 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
 import com.alawresz.twitterment.TweetModel.TweetData
+import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
@@ -22,7 +23,7 @@ class SentimentCountBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val sentiment = tuple.getStringByField("sentiment")
+    val sentiment = tuple.getStringByField(TupleModel.sentiment)
     _counts(sentiment) += 1
     println("-"*120)
     _counts.foreach(print)

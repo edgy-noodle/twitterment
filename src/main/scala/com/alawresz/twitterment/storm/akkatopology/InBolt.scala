@@ -2,6 +2,7 @@ package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.configuration.ProdConfig
 import com.alawresz.twitterment.TweetModel.Tweet
+import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.kafka.bolt.KafkaBolt
 import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper
@@ -9,7 +10,6 @@ import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.{StringSerializer, ByteArraySerializer}
 
 import java.util.Properties
-import com.alawresz.twitterment.storm.TupleModel
 
 object InBolt {
   private val producerProps = (config: ProdConfig) => {
