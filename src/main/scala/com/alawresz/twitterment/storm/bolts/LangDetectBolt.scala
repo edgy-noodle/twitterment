@@ -35,10 +35,14 @@ class LangDetectBolt extends IRichBolt with LazyLogging {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
+    val tweet         = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
     Try {
-      val text = _textObject.forText(tweet.text)
-      _langDetect.getProbabilities(text).get(0).getLocale().toString()
+      val text        = _textObject.forText(tweet.text)
+      val lang        = _langDetect.getProbabilities(text).get(0)
+      val probability = lang.getProbability()
+
+      if (probability >= 95.0) lang.getLocale()
+      else Failure(new Exception("Could't determine the language with more than 95% confidence."))
     } match {
       case Failure(exception) =>
         logger.error(exception.getMessage())
