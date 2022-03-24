@@ -42,7 +42,11 @@ class LangDetectBolt extends IRichBolt with LazyLogging {
       val probability = lang.getProbability()
 
       if (probability >= 95.0) lang.getLocale()
-      else Failure(new Exception("Could't determine the language with more than 95% confidence."))
+      else Failure(
+        new Exception(
+          s"Could't determine the language of ${tweet.text} with more than 95% confidence."
+        )
+      )
     } match {
       case Failure(exception) =>
         logger.error(exception.getMessage())
