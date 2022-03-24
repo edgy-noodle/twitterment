@@ -1,5 +1,13 @@
 package com.alawresz.twitterment.configuration
 
+case class RedisKeys(sentimentKey: String, langKey: String)
+
+case class RedisConfig(
+  hostAddress: String,
+  hostPort: Int,
+  keys: RedisKeys
+)
+
 case class TwitterConfig(
   bearerToken: String,
   url: String,
@@ -27,4 +35,8 @@ case class ProdConfig(
 
 case class KafkaConfig(producer: ProdConfig, consumer: ConsConfig)
 
-case class Config(kafkaConfig: KafkaConfig, twitterConfig: TwitterConfig)
+case class Config(
+  kafkaConfig: KafkaConfig, 
+  twitterConfig: TwitterConfig, 
+  redisConfig: RedisConfig
+)
