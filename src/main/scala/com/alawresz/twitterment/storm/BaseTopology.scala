@@ -29,9 +29,9 @@ trait BaseTopology extends Configuration {
       .setBolt("langDetectBolt", langDetectBolt)
       .shuffleGrouping("deserializeTweetBolt")
 
-    val langCountBolt = LangCountBolt()
+    val langStoreBolt = RedisSaveBolt(redisConfig.keys.langKey, TupleModel.lang)
     builder
-      .setBolt("langCountBolt", langCountBolt)
+      .setBolt("langStoreBolt", langStoreBolt)
       .fieldsGrouping("langDetectBolt", new Fields(TupleModel.lang))
   }
 
@@ -41,9 +41,9 @@ trait BaseTopology extends Configuration {
       .setBolt("sentimentAnalyzeBolt", sentimentAnalyzeBolt)
       .shuffleGrouping("langDetectBolt")
     
-    val sentimentCountBolt = SentimentCountBolt()
+    val sentimentStoreBolt = RedisSaveBolt(redisConfig.keys.sentimentKey, TupleModel.sentiment)
     builder
-      .setBolt("sentimentCountBolt", sentimentCountBolt)
+      .setBolt("sentimentStoreBolt", sentimentStoreBolt)
       .fieldsGrouping("sentimentAnalyzeBolt", new Fields(TupleModel.sentiment))
   }
 

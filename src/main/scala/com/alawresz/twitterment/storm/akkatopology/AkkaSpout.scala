@@ -23,7 +23,7 @@ class AkkaSpout(config: TwitterConfig) extends BaseRichSpout with TweetSerializa
   private def emitTweet(tweetFuture: Future[Tweet]) = {
     tweetFuture.onComplete {
       case Failure(exception) =>
-        logger.error(exception.toString())
+        logger.error(exception.getMessage())
       case Success(tweet) =>
         tweet match {
           case Tweet(data: TweetData) =>
