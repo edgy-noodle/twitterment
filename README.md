@@ -5,7 +5,7 @@
 ---
 
 ### TWITTER SENTIMENT ANALYSIS APP
-A simple Scala app for analyzing tweets. The sample provided via Twitter API is first analyzed to detect the language. Afterwards the tweets in English will undergo further analysis to establish their sentiment. Analyses with additional filtering rules will be implemented in the future. Integration with Redis and Grafana will also be added to save and visualize the data.
+A simple Scala app for analyzing tweets. The sample provided via Twitter API is first analyzed to detect the language. Afterwards the tweets in English will undergo further analysis to establish their sentiment. Analyses with additional filtering rules will be implemented in the future.
 
 Twitterment is using the following technologies:
 - Kafka
@@ -16,6 +16,7 @@ Twitterment is using the following technologies:
 - Twitter4J
 - Language Detector by Optimaize
 - Stanford CoreNLP
+- Redis
 
 ---
 
@@ -32,7 +33,7 @@ The app will use a __Twitter4J__ stream and produce to a __Kafka__ topic `tweets
 ---
 
 ## How to launch
-### 1. Start Kafka & Zookeeper
+### 1. Start Kafka, Zookeeper & Redis
 ```bash
 cd docker
 docker-compose up
