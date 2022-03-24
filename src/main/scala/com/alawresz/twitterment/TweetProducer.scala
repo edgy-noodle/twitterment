@@ -40,7 +40,7 @@ object TweetProducer extends Configuration {
 
   private object ProducerCallback extends Callback {
     override def onCompletion(metadata: RecordMetadata, exception: Exception): Unit = {
-      if (exception != null) logger.error(exception.toString())
+      if (exception != null) logger.error(exception.getMessage())
     }
   }
 }

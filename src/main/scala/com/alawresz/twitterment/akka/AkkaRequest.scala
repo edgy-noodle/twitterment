@@ -35,7 +35,7 @@ case class AkkaRequest(token: String, url: String) extends TweetJsonSupport with
         logger.error(response.toString())
         Future.failed(new Exception(response.toString()))
       case Failure(exception) =>
-        logger.error(exception.toString())
+        logger.error(exception.getMessage())
         Future.failed(exception)
     }.andThen {
       case _ => system.terminate()

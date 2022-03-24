@@ -9,9 +9,10 @@ trait Configuration extends StrictLogging {
   lazy val config         = ConfigSource.default.loadOrThrow[Config]
   lazy val kafkaConfig    = config.kafkaConfig
   lazy val twitterConfig  = config.twitterConfig
+  lazy val redisConfig    = config.redisConfig
 
   lazy val line           = "-" * 120
-  lazy val configWithLogo =
+  val configWithLogo =
     s"""
     |  _________  ___       __   ___  _________  _________  _______   ________  _____ ______   _______   ________   _________   
     | |\\___   ___\\\\  \\     |\\  \\|\\  \\|\\___   ___\\\\___   ___\\\\  ___ \\ |\\   __  \\|\\   _ \\  _   \\|\\  ___ \\ |\\   ___  \\|\\___   ___\\ 
@@ -26,6 +27,7 @@ trait Configuration extends StrictLogging {
     | in-spout: ${kafkaConfig.consumer}
     | in-bolt:  ${kafkaConfig.producer}
     | twitter:  ${twitterConfig}
+    | redis:    ${redisConfig}
     |$line
     |""".stripMargin
 

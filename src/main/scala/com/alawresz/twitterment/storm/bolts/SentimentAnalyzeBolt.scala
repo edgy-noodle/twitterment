@@ -61,7 +61,6 @@ class SentimentAnalyzeBolt extends IRichBolt {
     lang match {
       case "en" =>
         val sentiment = findSentiment(tweet.text).toString()
-        println((tweet, sentiment))
         _collector.emit(tuple, new Values(tweet, sentiment))
         _collector.ack(tuple)
       case _    =>

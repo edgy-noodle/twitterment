@@ -33,7 +33,8 @@ object Libs {
   val storm = Seq(
     "org.apache.storm" % "storm-core",
     "org.apache.storm" % "storm-client",
-    "org.apache.storm" % "storm-kafka-client"
+    "org.apache.storm" % "storm-kafka-client",
+    "org.apache.storm" % "storm-redis"
   ).map(_ % stormVer)
   val kafka = Seq(
     "org.apache.kafka" % "kafka-clients" % kafkaVer
