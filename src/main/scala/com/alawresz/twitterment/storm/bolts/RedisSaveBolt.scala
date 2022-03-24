@@ -26,7 +26,7 @@ class RedisSaveBolt(key: String, field: String, poolConfig: JedisPoolConfig)
         case Failure(exception) =>
           logger.error(exception.getMessage())
           // no acking, will retry
-        case Success =>
+        case Success(_) =>
           collector.ack(tuple)
       }
     }
