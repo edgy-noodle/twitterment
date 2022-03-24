@@ -12,10 +12,11 @@ import com.optimaize.langdetect.{LanguageDetector, LanguageDetectorBuilder}
 import com.optimaize.langdetect.ngram.NgramExtractors
 import com.optimaize.langdetect.text.{TextObjectFactory, CommonTextObjectFactories}
 
+import com.typesafe.scalalogging.LazyLogging
+import scala.util.{Try, Failure, Success}
 import java.{util => ju}
-import scala.util.Try
 
-class LangDetectBolt extends IRichBolt {
+class LangDetectBolt extends IRichBolt with LazyLogging {
   var _collector: OutputCollector     = _
   var _conf: ju.Map[String, Object]   = _
   var _langDetect: LanguageDetector   = _
@@ -36,13 +37,15 @@ class LangDetectBolt extends IRichBolt {
   override def execute(tuple: Tuple): Unit = {
     val tweet = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
     Try {
-      for {
-        text <- Option(_textObject.forText(tweet.text))
-        lang <- Option(_langDetect.getProbabilities(text).get(0).getLocale().toString())
-      } {
-      _collector.emit(tuple, new Values(tweet, lang))
-      _collector.ack(tuple)
-      }
+      val text = _textObject.forText(tweet.text)
+      _langDetect.getProbabilities(text).get(0).getLocale().toString()
+    } match {
+      case Failure(exception) =>
+        logger.error(exception.getMessage())
+        // no acking, will retry
+      case Success(lang) =>
+        _collector.emit(tuple, new Values(tweet, lang))
+        _collector.ack(tuple)
     }
   }
 

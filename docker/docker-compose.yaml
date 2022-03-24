@@ -1,5 +1,16 @@
 version: '3'
 services:
+  grafana:
+    image: bitnami/grafana:8.4.4
+    hostname: grafana
+    container_name: grafana
+    ports:
+    - 3000:3000
+    environment:
+      GF_INSTALL_PLUGINS: redis-datasource:2.1.1,redis-app:2.2.1
+    volumes:
+      - C:\Grafana:/bitnami/grafana/data
+
   redis:
     image: bitnami/redis:6.0.16
     hostname: redis
@@ -10,6 +21,7 @@ services:
       ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
       - C:\Redis:/bitnami/redis/data
+
   zoo:
     image: bitnami/zookeeper:3.6.3
     hostname: zoo
