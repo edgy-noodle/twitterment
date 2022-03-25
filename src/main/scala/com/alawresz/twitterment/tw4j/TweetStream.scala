@@ -21,7 +21,7 @@ object TweetStream {
   private val listener = (tweetProducer: TweetProducer) => 
     new StatusListener() with TweetSerialization {
       override def onException(exception: Exception): Unit =
-        logger.error(exception.getMessage())
+        logger.warn(exception.getMessage())
       override def onStatus(status: Status): Unit = {
         val tweet = TweetData(status.getId().toString(), status.getText())
         tweetProducer.sendTweet(serialize(tweet))

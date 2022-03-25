@@ -32,7 +32,7 @@ trait BaseTopology extends Configuration {
     val langStoreBolt = RedisSaveBolt(redisConfig.keys.langKey, TupleModel.lang)
     builder
       .setBolt("langStoreBolt", langStoreBolt)
-      .fieldsGrouping("langDetectBolt", new Fields(TupleModel.lang))
+      .shuffleGrouping("langDetectBolt")
   }
 
   private def getSentiments(): Unit = {
@@ -44,7 +44,7 @@ trait BaseTopology extends Configuration {
     val sentimentStoreBolt = RedisSaveBolt(redisConfig.keys.sentimentKey, TupleModel.sentiment)
     builder
       .setBolt("sentimentStoreBolt", sentimentStoreBolt)
-      .fieldsGrouping("sentimentAnalyzeBolt", new Fields(TupleModel.sentiment))
+      .shuffleGrouping("sentimentAnalyzeBolt")
   }
 
   def startTopology(name: String): Unit = {

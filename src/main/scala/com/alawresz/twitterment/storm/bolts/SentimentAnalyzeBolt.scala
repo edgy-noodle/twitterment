@@ -13,9 +13,11 @@ import edu.stanford.nlp.ling.CoreAnnotations
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations
 
+import com.typesafe.scalalogging.LazyLogging
+import scala.util.{Try, Failure, Success}
 import java.{util => ju}
 
-class SentimentAnalyzeBolt extends IRichBolt {
+class SentimentAnalyzeBolt extends IRichBolt with LazyLogging {
   var _collector: OutputCollector   = _
   var _conf: ju.Map[String, Object] = _
   var _pipeline: StanfordCoreNLP    = _
@@ -56,17 +58,25 @@ class SentimentAnalyzeBolt extends IRichBolt {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val tweet     = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
-    val lang      = tuple.getStringByField(TupleModel.lang)
-    lang match {
-      case "en" =>
-        val sentiment = findSentiment(tweet.text).toString()
-        _collector.emit(tuple, new Values(tweet, sentiment))
-        _collector.ack(tuple)
-      case _    =>
-        // no need to process if lang isn't English
-        _collector.ack(tuple)
+    Try {
+      val tweet = tuple.getValueByField(TupleModel.tweet).asInstanceOf[TweetData]
+      val lang  = tuple.getStringByField(TupleModel.lang)
+      (tweet, lang)
+    } match {
+      case Failure(exception)     =>
+        logger.warn(exception.toString())
+        // no need to process if lang can't be detected
+      case Success((tweet, lang)) =>
+        lang match {
+          case "en" =>
+            val sentiment = findSentiment(tweet.text).toString()
+            _collector.emit(tuple, new Values(tweet, sentiment))
+          case _    =>
+            // no need to process if lang isn't English
+            
+        }
     }
+    _collector.ack(tuple)
   }
 
   override def cleanup(): Unit = {
