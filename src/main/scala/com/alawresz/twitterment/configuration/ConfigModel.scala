@@ -1,6 +1,10 @@
 package com.alawresz.twitterment.configuration
 
-case class RedisKeys(sentimentKey: String, langKey: String)
+case class RedisKeys(
+  sentimentKey: String, 
+  langKey: String,
+  statusKey: String
+)
 
 case class RedisConfig(
   hostAddress: String,
