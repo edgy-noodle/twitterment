@@ -1,14 +1,13 @@
-package com.alawresz.twitterment.tw4j
+package com.alawresz.twitterment.helpers
 
-import com.alawresz.twitterment.TweetModel._
-import com.alawresz.twitterment.TweetProducer
+import com.alawresz.twitterment.helpers.TweetModel._
 import com.alawresz.twitterment.configuration.TwitterConfig
 
 import com.typesafe.scalalogging.LazyLogging
 import twitter4j.conf.ConfigurationBuilder
 import twitter4j._
 
-object TweetStream {
+object Tw4jStream {
   private val twitterStreamConfig = (twitterConfig: TwitterConfig) => {
     val builder = new ConfigurationBuilder()
     builder.setOAuthConsumerKey(twitterConfig.consumerKey)

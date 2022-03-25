@@ -12,43 +12,43 @@ trait BaseTopology extends Configuration {
   val builder = new TopologyBuilder()
 
   private def getTweets(): Unit = {
-    val inSpout = InSpout(kafkaConfig.consumer)
+    val tweetsInSpout = TweetsInSpout(kafkaConfig.consumer)
     builder
-      .setSpout("inSpout", inSpout, 1)
+      .setSpout("tweetsInSpout", tweetsInSpout, 1)
     logger.info(s"Consuming from ${kafkaConfig.consumer.topic} topic")
 
     val deserializeTweetBolt = DeserializeTweetBolt()
     builder
       .setBolt("deserializeTweetBolt", deserializeTweetBolt, 1)
-      .shuffleGrouping("inSpout")
+      .shuffleGrouping("tweetsInSpout")
   }
 
   private def getLanguages(): Unit = {
-    val langDetectBolt = LangDetectBolt()
+    val detectLangBolt = DetectLangBolt()
     builder
-      .setBolt("langDetectBolt", langDetectBolt, 1)
+      .setBolt("detectLangBolt", detectLangBolt, 1)
       .shuffleGrouping("deserializeTweetBolt")
 
     
   }
 
   private def getSentiments(): Unit = {
-    val sentimentAnalyzeBolt = SentimentAnalyzeBolt()
+    val detectSentimentBolt = DetectSentimentBolt()
     builder
-      .setBolt("sentimentAnalyzeBolt", sentimentAnalyzeBolt, 20)
-      .shuffleGrouping("langDetectBolt")
+      .setBolt("detectSentimentBolt", detectSentimentBolt, 20)
+      .shuffleGrouping("detectLangBolt")
   }
 
   private def storeResults(): Unit = {
-    val langStoreBolt = RedisSaveBolt(redisConfig.keys.langKey, TupleModel.lang)
+    val langStoreBolt = SaveHashToRedisBolt(redisConfig.keys.langKey, TupleModel.lang)
     builder
       .setBolt("langStoreBolt", langStoreBolt, 1)
-      .shuffleGrouping("langDetectBolt")
+      .shuffleGrouping("detectLangBolt")
     
-    val sentimentStoreBolt = RedisSaveBolt(redisConfig.keys.sentimentKey, TupleModel.sentiment)
+    val sentimentStoreBolt = SaveHashToRedisBolt(redisConfig.keys.sentimentKey, TupleModel.sentiment)
     builder
       .setBolt("sentimentStoreBolt", sentimentStoreBolt, 20)
-      .shuffleGrouping("sentimentAnalyzeBolt")
+      .shuffleGrouping("detectSentimentBolt")
   }
 
   def startTopology(name: String): Unit = {

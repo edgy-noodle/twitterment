@@ -10,7 +10,7 @@ import org.apache.storm.topology.OutputFieldsDeclarer
 import com.typesafe.scalalogging.LazyLogging
 import scala.util.{Try, Failure, Success}
 
-class RedisSaveBolt(key: String, field: String, poolConfig: JedisPoolConfig) 
+class SaveHashToRedisBolt(key: String, field: String, poolConfig: JedisPoolConfig) 
   extends AbstractRedisBolt(poolConfig) with LazyLogging {
     override protected def process(tuple: Tuple): Unit = {
       // nothing to do
@@ -41,7 +41,7 @@ class RedisSaveBolt(key: String, field: String, poolConfig: JedisPoolConfig)
     }
 }
 
-object RedisSaveBolt extends Configuration {
+object SaveHashToRedisBolt extends Configuration {
   private val poolConfig = 
     new JedisPoolConfig.Builder()
       .setHost(redisConfig.hostAddress)
@@ -49,5 +49,5 @@ object RedisSaveBolt extends Configuration {
       .build()
   
   def apply(key: String, field: String) =
-    new RedisSaveBolt(key, field, poolConfig)
+    new SaveHashToRedisBolt(key, field, poolConfig)
 }

@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.TweetModel.TweetSerialization
+import com.alawresz.twitterment.helpers.TweetModel.TweetSerialization
 import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
@@ -24,18 +24,16 @@ class DeserializeTweetBolt extends IRichBolt with TweetSerialization with LazyLo
   override def execute(tuple: Tuple): Unit = {
     Try { tuple.getBinaryByField(TupleModel.value) } match {
       case Failure(exception) =>
-        _collector.ack(tuple)
+        logger.warn(exception.getMessage())
       case Success(value)     =>
         deserialize(value) match {
-          case Some(tweet)  =>
+          case Some(tweet) =>
             _collector.emit(tuple, new Values(tweet))
-            _collector.ack(tuple)
-          case None         =>
+          case None        =>
             logger.error(s"Couldn't deserialize ${value}!")
-            // No need to process if the value can't be deserialized
-            _collector.ack(tuple)
         }
     }
+    _collector.ack(tuple)
   }
 
   override def cleanup(): Unit = {

@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.akka
 
-import com.alawresz.twitterment.TweetModel._
+import com.alawresz.twitterment.helpers.TweetModel._
 import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 

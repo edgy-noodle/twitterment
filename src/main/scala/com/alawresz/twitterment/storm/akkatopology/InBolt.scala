@@ -1,7 +1,7 @@
 package com.alawresz.twitterment.storm.akkatopology
 
 import com.alawresz.twitterment.configuration.ProdConfig
-import com.alawresz.twitterment.TweetModel.Tweet
+import com.alawresz.twitterment.helpers.TweetModel.Tweet
 import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.kafka.bolt.KafkaBolt
@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.{StringSerializer, ByteArraySeriali
 
 import java.util.Properties
 
-object InBolt {
+object TweetsInBolt {
   private val producerProps = (config: ProdConfig) => {
     val props = new Properties()
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.bootstrapServers.mkString(","))

@@ -1,7 +1,7 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.TweetModel.TweetData
-import com.alawresz.twitterment.helpers.RedisSaveStatus
+import com.alawresz.twitterment.helpers.TweetModel.TweetData
+import com.alawresz.twitterment.helpers.SaveHashToRedis
 import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
@@ -18,7 +18,7 @@ import scala.util.{Try, Failure, Success}
 import java.{util => ju}
 
 
-class LangDetectBolt extends IRichBolt with LazyLogging {
+class DetectLangBolt extends IRichBolt with LazyLogging {
   var _collector: OutputCollector     = _
   var _conf: ju.Map[String, Object]   = _
   var _langDetect: LanguageDetector   = _
@@ -54,10 +54,10 @@ class LangDetectBolt extends IRichBolt with LazyLogging {
 
               if (probability >= 0.9) {
                 _collector.emit(tuple, new Values(tweet, lang))
-                RedisSaveStatus("DETECTED")
-              } else RedisSaveStatus("PROBABILITY TOO LOW")
+                SaveHashToRedis("DETECTED")
+              } else SaveHashToRedis("PROBABILITY TOO LOW")
             } else {
-              RedisSaveStatus("COULDN'T DETECT")
+              SaveHashToRedis("COULDN'T DETECT")
             }
         }
     }
@@ -75,7 +75,7 @@ class LangDetectBolt extends IRichBolt with LazyLogging {
     _conf
 }
 
-object LangDetectBolt {
-  def apply(): LangDetectBolt =
-    new LangDetectBolt()
+object DetectLangBolt {
+  def apply(): DetectLangBolt =
+    new DetectLangBolt()
 }

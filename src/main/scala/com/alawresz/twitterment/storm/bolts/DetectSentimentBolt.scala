@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.bolts
 
-import com.alawresz.twitterment.TweetModel.TweetData
+import com.alawresz.twitterment.helpers.TweetModel.TweetData
 import com.alawresz.twitterment.storm.TupleModel
 
 import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
@@ -17,7 +17,7 @@ import com.typesafe.scalalogging.LazyLogging
 import scala.util.{Try, Failure, Success}
 import java.{util => ju}
 
-class SentimentAnalyzeBolt extends IRichBolt with LazyLogging {
+class DetectSentimentBolt extends IRichBolt with LazyLogging {
   var _collector: OutputCollector   = _
   var _conf: ju.Map[String, Object] = _
   var _pipeline: StanfordCoreNLP    = _
@@ -90,7 +90,7 @@ class SentimentAnalyzeBolt extends IRichBolt with LazyLogging {
     _conf  
 }
 
-object SentimentAnalyzeBolt {
-  def apply(): SentimentAnalyzeBolt =
-    new SentimentAnalyzeBolt()
+object DetectSentimentBolt {
+  def apply(): DetectSentimentBolt =
+    new DetectSentimentBolt()
 }

@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.storm.akkatopology
 
-import com.alawresz.twitterment.TweetModel._
+import com.alawresz.twitterment.helpers.TweetModel._
 import com.alawresz.twitterment.storm.TupleModel
 import com.alawresz.twitterment.akka.AkkaRequest
 import com.alawresz.twitterment.configuration.{Configuration, TwitterConfig}

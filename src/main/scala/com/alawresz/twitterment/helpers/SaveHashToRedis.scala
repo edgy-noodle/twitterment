@@ -5,7 +5,7 @@ import com.alawresz.twitterment.configuration.Configuration
 import redis.clients.jedis.{JedisPool, JedisPoolConfig}
 import scala.util.{Using, Try, Failure, Success}
 
-object RedisSaveStatus extends Configuration {
+object SaveHashToRedis extends Configuration {
   def apply(field: String): Unit = {
     Using(new JedisPool(new JedisPoolConfig(), redisConfig.hostAddress)) { pool =>
       Try { pool.getResource() } match {

@@ -1,6 +1,6 @@
 package com.alawresz.twitterment.akka
 
-import com.alawresz.twitterment.TweetModel.Tweet
+import com.alawresz.twitterment.helpers.TweetModel.Tweet
 
 import scala.concurrent.duration._
 import scala.concurrent.Future

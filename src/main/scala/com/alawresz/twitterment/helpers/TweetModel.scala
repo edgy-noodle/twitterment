@@ -1,4 +1,4 @@
-package com.alawresz.twitterment
+package com.alawresz.twitterment.helpers
 
 import com.typesafe.scalalogging.LazyLogging
 

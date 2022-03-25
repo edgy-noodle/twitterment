@@ -15,9 +15,9 @@ object AkkaTopology extends BaseTopology {
       .setSpout("akkaSpout", akkaSpout)
 
     // Implemented just for learning purposes
-    val inBolt = InBolt(kafkaConfig.producer)
+    val tweetsTweetsInBolt = TweetsInBolt(kafkaConfig.producer)
     builder
-      .setBolt("inBolt", inBolt)
+      .setBolt("tweetsTweetsInBolt", tweetsTweetsInBolt)
       .shuffleGrouping("akkaSpout")
 
     logger.info(s"Produding tweets to ${kafkaConfig.producer.topic} topic")
