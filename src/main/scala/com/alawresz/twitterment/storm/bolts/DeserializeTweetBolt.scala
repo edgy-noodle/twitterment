@@ -7,9 +7,11 @@ import org.apache.storm.topology.{OutputFieldsDeclarer, IRichBolt}
 import org.apache.storm.task.{OutputCollector, TopologyContext}
 import org.apache.storm.tuple.{Tuple, Values, Fields}
 
+import com.typesafe.scalalogging.LazyLogging
+import scala.util.{Try, Failure, Success}
 import java.{util => ju}
 
-class DeserializeTweetBolt extends IRichBolt with TweetSerialization {
+class DeserializeTweetBolt extends IRichBolt with TweetSerialization with LazyLogging {
   var _collector: OutputCollector     = _
   var _conf: ju.Map[String, Object]   = _
 
@@ -20,15 +22,19 @@ class DeserializeTweetBolt extends IRichBolt with TweetSerialization {
     }
 
   override def execute(tuple: Tuple): Unit = {
-    val value = tuple.getBinaryByField(TupleModel.value)
-    deserialize(value) match {
-      case Some(tweet) =>
-        _collector.emit(tuple, new Values(tweet))
+    Try { tuple.getBinaryByField(TupleModel.value) } match {
+      case Failure(exception) =>
         _collector.ack(tuple)
-      case None =>
-        logger.error(s"Couldn't deserialize ${value}!")
-        // No need to process if the value can't be deserialized
-        _collector.ack(tuple)
+      case Success(value)     =>
+        deserialize(value) match {
+          case Some(tweet)  =>
+            _collector.emit(tuple, new Values(tweet))
+            _collector.ack(tuple)
+          case None         =>
+            logger.error(s"Couldn't deserialize ${value}!")
+            // No need to process if the value can't be deserialized
+            _collector.ack(tuple)
+        }
     }
   }
 

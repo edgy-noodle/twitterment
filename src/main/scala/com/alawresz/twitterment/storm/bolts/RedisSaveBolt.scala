@@ -17,17 +17,22 @@ class RedisSaveBolt(key: String, field: String, poolConfig: JedisPoolConfig)
     }
 
     override def execute(tuple: Tuple): Unit = {
-      val fieldValue = tuple.getStringByField(field)
-      Try {
-        val jedisCommands = getInstance()
-        jedisCommands.hincrBy(key, fieldValue, 1)
-        returnInstance(jedisCommands)
-      } match {
-        case Failure(exception) =>
-          logger.error(exception.getMessage())
-          // no acking, will retry
-        case Success(_) =>
+      Try { tuple.getStringByField(field) } match {
+        case Failure(exception)   =>
+          logger.warn(exception.getMessage())
           collector.ack(tuple)
+        case Success(fieldValue)  =>
+          Try {
+            val jedisCommands = getInstance()
+            jedisCommands.hincrBy(key, fieldValue, 1)
+            returnInstance(jedisCommands)
+          } match {
+            case Failure(exception) =>
+              logger.warn(exception.getMessage())
+              // no acking, will retry
+            case Success(_) =>
+              collector.ack(tuple)
+          }
       }
     }
 

@@ -14,48 +14,53 @@ trait BaseTopology extends Configuration {
   private def getTweets(): Unit = {
     val inSpout = InSpout(kafkaConfig.consumer)
     builder
-      .setSpout("inSpout", inSpout)
+      .setSpout("inSpout", inSpout, 1)
     logger.info(s"Consuming from ${kafkaConfig.consumer.topic} topic")
 
     val deserializeTweetBolt = DeserializeTweetBolt()
     builder
-      .setBolt("deserializeTweetBolt", deserializeTweetBolt)
+      .setBolt("deserializeTweetBolt", deserializeTweetBolt, 1)
       .shuffleGrouping("inSpout")
   }
 
   private def getLanguages(): Unit = {
     val langDetectBolt = LangDetectBolt()
     builder
-      .setBolt("langDetectBolt", langDetectBolt)
+      .setBolt("langDetectBolt", langDetectBolt, 1)
       .shuffleGrouping("deserializeTweetBolt")
 
-    val langStoreBolt = RedisSaveBolt(redisConfig.keys.langKey, TupleModel.lang)
-    builder
-      .setBolt("langStoreBolt", langStoreBolt)
-      .fieldsGrouping("langDetectBolt", new Fields(TupleModel.lang))
+    
   }
 
   private def getSentiments(): Unit = {
     val sentimentAnalyzeBolt = SentimentAnalyzeBolt()
     builder
-      .setBolt("sentimentAnalyzeBolt", sentimentAnalyzeBolt)
+      .setBolt("sentimentAnalyzeBolt", sentimentAnalyzeBolt, 20)
+      .shuffleGrouping("langDetectBolt")
+  }
+
+  private def storeResults(): Unit = {
+    val langStoreBolt = RedisSaveBolt(redisConfig.keys.langKey, TupleModel.lang)
+    builder
+      .setBolt("langStoreBolt", langStoreBolt, 1)
       .shuffleGrouping("langDetectBolt")
     
     val sentimentStoreBolt = RedisSaveBolt(redisConfig.keys.sentimentKey, TupleModel.sentiment)
     builder
-      .setBolt("sentimentStoreBolt", sentimentStoreBolt)
-      .fieldsGrouping("sentimentAnalyzeBolt", new Fields(TupleModel.sentiment))
+      .setBolt("sentimentStoreBolt", sentimentStoreBolt, 20)
+      .shuffleGrouping("sentimentAnalyzeBolt")
   }
 
   def startTopology(name: String): Unit = {
     val cluster = new LocalCluster()
     val clusterConfig = new Config()
-    // clusterConfig.setDebug(true)
+    clusterConfig.setDebug(true)
 
     val topology = {
       getTweets()
       getLanguages()
       getSentiments()
+      storeResults()
       
       builder.createTopology()
     }
