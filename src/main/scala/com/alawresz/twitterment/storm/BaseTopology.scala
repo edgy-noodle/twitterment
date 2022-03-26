@@ -64,6 +64,6 @@ trait BaseTopology extends Configuration {
       
       builder.createTopology()
     }
-    cluster.submitTopology("twitterment", clusterConfig, topology)
+    cluster.submitTopology(stormConfig.topologyName, clusterConfig, topology)
   }
 }

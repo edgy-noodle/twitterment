@@ -39,7 +39,10 @@ case class ProdConfig(
 
 case class KafkaConfig(producer: ProdConfig, consumer: ConsConfig)
 
+case class StormConfig(topologyName: String)
+
 case class Config(
+  stormConfig: StormConfig,
   kafkaConfig: KafkaConfig, 
   twitterConfig: TwitterConfig, 
   redisConfig: RedisConfig

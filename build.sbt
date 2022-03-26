@@ -14,7 +14,8 @@ val dependencies =
 
 lazy val settings = Seq(
   scalaVersion := "2.13.8",
-  organization := "com.alawresz"
+  organization := "com.alawresz",
+  fork := true
 )
 
 lazy val root = (project in file("."))

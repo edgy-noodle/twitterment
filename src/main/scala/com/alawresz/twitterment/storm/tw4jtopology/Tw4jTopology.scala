@@ -4,6 +4,8 @@ import com.alawresz.twitterment.helpers.TweetProducer
 import com.alawresz.twitterment.storm.BaseTopology
 import com.alawresz.twitterment.helpers.Tw4jStream
 
+import org.apache.storm.LocalCluster
+
 object Tw4jTopology extends BaseTopology {
   private def produceTweets(): Unit = {
     val tweetProducer = TweetProducer()

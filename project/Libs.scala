@@ -8,7 +8,7 @@ object Libs {
   private val scalatestVer = "3.2.11"
   private val akkaVer = "2.6.8"
   private val akkaHttpVer = "10.2.9"
-  private val stormVer = "2.3.0"
+  private val stormVer = "2.4.0"
   private val kafkaVer = "3.1.0"
   private val langDetectVer = "0.6"
   private val circeVer = "0.14.1"
