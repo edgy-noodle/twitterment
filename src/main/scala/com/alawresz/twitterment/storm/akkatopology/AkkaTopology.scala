@@ -23,8 +23,9 @@ object AkkaTopology extends BaseTopology {
     logger.info(s"Produding tweets to ${kafkaConfig.producer.topic} topic")
   }
 
-  def apply(): Unit = {
+  def apply(isLocal: Boolean): Unit = {
     produceTweets()
-    startTopology("AkkaTopology")
+    if (isLocal) startLocalTopology()
+    else startRemoteTopology()
   }
 }

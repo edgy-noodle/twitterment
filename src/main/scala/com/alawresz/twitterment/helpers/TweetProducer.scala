@@ -23,7 +23,7 @@ class TweetProducer(props: Properties, topic: String) {
 object TweetProducer extends Configuration {
   private val producerProps = (config: ProdConfig) => {
     val props = new Properties()
-    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.bootstrapServers.mkString(","))
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.bootstrapServers)
     props.put(ProducerConfig.CLIENT_ID_CONFIG, config.clientId)
     props.put(ProducerConfig.ACKS_CONFIG, config.acks)
     props.put(ProducerConfig.LINGER_MS_CONFIG, config.lingerMs)

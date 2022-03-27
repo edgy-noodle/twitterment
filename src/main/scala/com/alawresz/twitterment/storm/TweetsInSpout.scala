@@ -10,7 +10,7 @@ import org.apache.kafka.common.serialization.{StringDeserializer, ByteArrayDeser
 object TweetsInSpout {
   private val kafkaSpoutConfig = (config: ConsConfig) =>
     new KafkaSpoutConfig
-      .Builder[String, Tweet](config.bootstrapServers.mkString(","), config.topic)
+      .Builder[String, Tweet](config.bootstrapServers, config.topic)
       .setProcessingGuarantee(KafkaSpoutConfig.ProcessingGuarantee.AT_MOST_ONCE)
       .setProp(ConsumerConfig.GROUP_ID_CONFIG, config.groupId)
       .setProp(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, config.fetchMinBytes)

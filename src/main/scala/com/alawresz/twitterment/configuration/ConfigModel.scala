@@ -22,14 +22,14 @@ case class TwitterConfig(
 )
 
 case class ConsConfig(
-  bootstrapServers: List[String],
+  bootstrapServers: String,
   groupId: String,
   topic: String,
   fetchMinBytes: Int
 )
 
 case class ProdConfig(
-  bootstrapServers: List[String],
+  bootstrapServers: String,
   clientId: String,
   topic: String,
   batchSize: Int,

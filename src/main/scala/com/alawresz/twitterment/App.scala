@@ -6,13 +6,15 @@ import com.alawresz.twitterment.storm.tw4jtopology.Tw4jTopology
 
 object App extends Configuration {
   def main(args: Array[String]): Unit = {
+    val isLocal = if (args.isEmpty) false else args(0) == "local"
+
     printConfig()
     twitterConfig match {
       case TwitterConfig(_, _, consumerKey, consumerSecret, accessToken, tokenSecret)
         if consumerKey == "" || consumerSecret == "" || accessToken == "" || tokenSecret == "" =>
-          AkkaTopology()
+          AkkaTopology(isLocal)
       case _ =>
-        Tw4jTopology()
+        Tw4jTopology(isLocal)
     }
   }
 }
