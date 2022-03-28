@@ -45,9 +45,12 @@ case class RedisKeys(
   statusKey: String
 )
 
+case class GraphiteConfig(hostAddress: String, hostPort: Int)
+
 case class Config(
   stormConfig: StormConfig,
   kafkaConfig: KafkaConfig, 
   twitterConfig: TwitterConfig, 
-  redisConfig: RedisConfig
+  redisConfig: RedisConfig,
+  graphiteConfig: GraphiteConfig
 )
