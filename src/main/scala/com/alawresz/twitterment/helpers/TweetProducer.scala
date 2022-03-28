@@ -35,6 +35,8 @@ object TweetProducer extends Configuration {
 
   def apply(): TweetProducer = {
     val config = kafkaConfig.producer
+    
+    logger.info(s"Tweet Producer: Producing tweets to ${config.topic}")
     new TweetProducer(producerProps(config), config.topic)
   }
 

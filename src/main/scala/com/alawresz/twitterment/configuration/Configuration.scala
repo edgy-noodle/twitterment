@@ -11,6 +11,7 @@ trait Configuration extends StrictLogging {
   lazy val twitterConfig  = config.twitterConfig
   lazy val redisConfig    = config.redisConfig
   lazy val stormConfig    = config.stormConfig
+  lazy val graphiteConfig = config.graphiteConfig
 
   lazy val line           = "-" * 120
   val configWithLogo =
@@ -30,6 +31,7 @@ trait Configuration extends StrictLogging {
     | storm:    ${stormConfig}
     | twitter:  ${twitterConfig}
     | redis:    ${redisConfig}
+    | graphite: ${graphiteConfig}
     |$line
     |""".stripMargin
 

@@ -1,10 +1,21 @@
 version: '3'
 services:
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: graphite
+    ports:
+      - 80:80
+      - 2003-2004:2003-2004
+      - 2023-2024:2023-2024
+      - 8125:8125/udp
+      - 8126:8126
+    restart: always
+
   grafana:
     image: bitnami/grafana:8.4.4
     container_name: grafana
     ports:
-    - 3000:3000
+      - 3000:3000
     environment:
       GF_INSTALL_PLUGINS: redis-datasource:2.1.1,redis-app:2.2.1
     volumes:
@@ -14,7 +25,7 @@ services:
     image: bitnami/redis:6.0.16
     container_name: redis
     ports:
-    - 6379:6379
+      - 6379:6379
     environment:
       ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
@@ -94,7 +105,7 @@ services:
       - nimbus
       - zookeeper
     ports:
-      - 8080:8080
+      - 8090:8080
 
   topology:
     image: storm:2.3.0
