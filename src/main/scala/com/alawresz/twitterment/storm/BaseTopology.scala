@@ -20,9 +20,11 @@ trait BaseTopology extends Configuration {
   }
   private lazy val clusterConfig  = {
     val config = new Config()
-    config.setNumWorkers(50)
-    config.setDebug(true)
-    config.setFallBackOnJavaSerialization(true)
+    config.setNumWorkers(stormConfig.numWorkers)
+    config.setDebug(stormConfig.debug)
+    config.setFallBackOnJavaSerialization(stormConfig.javaSerialization)
+    config.setMaxSpoutPending(stormConfig.maxSpoutPending)
+    config.setMessageTimeoutSecs(stormConfig.messageTimeout)
 
     config
   }
@@ -71,5 +73,5 @@ trait BaseTopology extends Configuration {
   }
 
   def startRemoteTopology(): Unit =
-    StormSubmitter.submitTopology(stormConfig.topologyName, clusterConfig, topology)
+    StormSubmitter.submitTopologyWithProgressBar(stormConfig.topologyName, clusterConfig, topology)
 }
