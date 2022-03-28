@@ -7,7 +7,7 @@ import com.typesafe.scalalogging.LazyLogging
 import twitter4j.conf.ConfigurationBuilder
 import twitter4j._
 
-object Tw4jStream {
+object Tw4jStream extends LazyLogging {
   private val twitterStreamConfig = (twitterConfig: TwitterConfig) => {
     val builder = new ConfigurationBuilder()
     builder.setOAuthConsumerKey(twitterConfig.consumerKey)
@@ -35,6 +35,8 @@ object Tw4jStream {
   def apply(config: TwitterConfig, tweetProducer: TweetProducer): TwitterStream = {
     val stream = new TwitterStreamFactory(twitterStreamConfig(config)).getInstance()
     stream.addListener(listener(tweetProducer))
+    
+    logger.info("Tw4jStream: Obtained a stream sample from the listener.")
     stream.sample()
   }
 }
