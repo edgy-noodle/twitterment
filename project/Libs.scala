@@ -2,13 +2,14 @@ import sbt._
 
 object Libs {
   // Dependency versions
+  private val dropwizardVer = "3.2.6"
   private val pureconfigVer = "0.17.1"
   private val loggingVer = "3.9.2"
   private val logbackVer = "1.2.10"
   private val scalatestVer = "3.2.11"
-  private val akkaVer = "2.6.8"
+  private val akkaVer = "2.6.19"
   private val akkaHttpVer = "10.2.9"
-  private val stormVer = "2.3.0"
+  private val stormVer = "2.4.0"
   private val kafkaVer = "3.1.0"
   private val langDetectVer = "0.6"
   private val circeVer = "0.14.1"
@@ -16,6 +17,12 @@ object Libs {
   private val stanfordNlpVer = "4.4.0"
 
   // Dependencies
+  val dependenciesToOverride = Seq(
+    // To resolve JMX reporter missing from classpath
+    "io.dropwizard.metrics" % "metrics-core"         % dropwizardVer,
+    "io.dropwizard.metrics" % "metrics-graphite"     % dropwizardVer,
+    "io.dropwizard.metrics" % "metrics-jvm"          % dropwizardVer
+  )
   val pureconfig = Seq(
     "com.github.pureconfig" %% "pureconfig" % pureconfigVer
     )
@@ -24,7 +31,7 @@ object Libs {
   )
   val scalatest = Seq(
     "org.scalatest" %% "scalatest" % scalatestVer,
-    "org.scalatest" %% "scalatest" % scalatestVer % "test"
+    "org.scalatest" %% "scalatest" % scalatestVer % Test
   )
   val akka = Seq(
     "com.typesafe.akka" %% "akka-stream" % akkaVer,
@@ -40,6 +47,10 @@ object Libs {
   ).map(_ % stormVer)
   val kafka = Seq(
     "org.apache.kafka" % "kafka-clients" % kafkaVer
+  )
+  val embeddedKafka = Seq(
+    "io.github.embeddedkafka" %% "embedded-kafka" % kafkaVer,
+    "io.github.embeddedkafka" %% "embedded-kafka" % kafkaVer % Test
   )
   val langDetect = Seq(
     "com.optimaize.languagedetector" % "language-detector" % langDetectVer

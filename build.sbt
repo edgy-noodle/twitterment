@@ -7,15 +7,19 @@ val dependencies =
   akka ++
   storm ++
   kafka ++
+  embeddedKafka ++
   langDetect ++
   circe ++
   twitter4j ++
   stanfordNlp
 
-lazy val settings = Seq(
+lazy val settings   = Seq(
   scalaVersion := "2.13.8",
-  organization := "com.alawresz",
-  fork := true
+  organization := "com.alawresz"
+)
+
+lazy val testConfig = Seq(
+  Test / fork := true
 )
 
 lazy val root = (project in file("."))
@@ -26,10 +30,12 @@ lazy val root = (project in file("."))
     resolvers ++= Seq(
       "clojure" at "https://repo.clojars.org"
     ),
-    libraryDependencies ++= dependencies
+    libraryDependencies ++= dependencies,
+    dependencyOverrides ++= dependenciesToOverride
   )
+  .settings(testConfig)
 
-assemblyMergeStrategy in assembly := {
+ assembly / assemblyMergeStrategy := {
  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
  case x => MergeStrategy.first
 }

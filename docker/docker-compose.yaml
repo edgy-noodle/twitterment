@@ -69,54 +69,44 @@ services:
       KAFKA_CFG_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     restart: always
 
-  nimbus:
-    image: storm:2.3.0
-    container_name: nimbus
-    hostname: nimbus
-    command: storm nimbus
-    depends_on:
-      - zookeeper
-    ports:
-      - 3773:3773
-      - 3772:3772
-      - 6627:6627
-    restart: always
+  # nimbus:
+  #   image: storm:2.3.0
+  #   container_name: nimbus
+  #   hostname: nimbus
+  #   command: storm nimbus
+  #   depends_on:
+  #     - zookeeper
+  #   ports:
+  #     - 3773:3773
+  #     - 3772:3772
+  #     - 6627:6627
+  #   restart: always
+  #   volumes:
+  #     - .\topology.jar:/topology.jar
+  #   env_file:
+  #     - .env
     
-  supervisor:
-    image: storm:2.3.0
-    container_name: supervisor
-    command: storm supervisor
-    depends_on:
-      - zookeeper
-      - nimbus
-    ports:
-      - 8000:8000
-      - 6700:6700
-      - 6701:6701
-      - 6702:6702
-      - 6703:6703
-    restart: always
+  # supervisor:
+  #   image: storm:2.3.0
+  #   container_name: supervisor
+  #   command: storm supervisor
+  #   depends_on:
+  #     - zookeeper
+  #     - nimbus
+  #   ports:
+  #     - 8000:8000
+  #     - 6700:6700
+  #     - 6701:6701
+  #     - 6702:6702
+  #     - 6703:6703
+  #   restart: always
 
-  storm-ui:
-    image: storm:2.3.0
-    container_name: storm-ui
-    command: storm ui
-    depends_on:
-      - nimbus
-      - zookeeper
-    ports:
-      - 8080:8080
-
-  topology:
-    image: storm:2.3.0
-    container_name: topology
-    command: storm jar /topology.jar com.alawresz.twitterment.App
-    depends_on:
-      - kafka
-      - nimbus
-      - zookeeper
-      - supervisor
-    volumes:
-      - .\topology.jar:/topology.jar
-    env_file:
-      - .env
+  # storm-ui:
+  #   image: storm:2.3.0
+  #   container_name: storm-ui
+  #   command: storm ui
+  #   depends_on:
+  #     - nimbus
+  #     - zookeeper
+  #   ports:
+  #     - 8080:8080

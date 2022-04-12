@@ -11,14 +11,6 @@ import org.apache.storm.metrics2.reporters.GraphiteStormReporter
 
 trait BaseTopology extends Configuration {
   val builder                     = new TopologyBuilder()
-  private lazy val topology       = {
-    getTweets()
-    getLanguages()
-    getSentiments()
-    storeResults()
-
-    builder.createTopology()
-  }
   private lazy val metricsConfig  = {
     import scala.collection.JavaConverters._
     
@@ -30,7 +22,7 @@ trait BaseTopology extends Configuration {
       ).asJava
     ).asJava
   }
-  private lazy val clusterConfig  = {
+  lazy val topoConfig = {
     val config = new Config()
     config.setNumWorkers(stormConfig.numWorkers)
     config.setDebug(stormConfig.debug)
@@ -40,6 +32,14 @@ trait BaseTopology extends Configuration {
 
     config.put(Config.TOPOLOGY_METRICS_REPORTERS, metricsConfig)
     config
+  }
+  lazy val topology   = {
+    getTweets()
+    getLanguages()
+    getSentiments()
+    storeResults()
+
+    builder.createTopology()
   }
 
   private def getTweets(): Unit = {
@@ -82,9 +82,9 @@ trait BaseTopology extends Configuration {
 
   def startLocalTopology(): Unit = {
     val cluster = new LocalCluster()
-    cluster.submitTopology(stormConfig.topologyName, clusterConfig, topology)
+    cluster.submitTopology(stormConfig.topologyName, topoConfig, topology)
   }
 
   def startRemoteTopology(): Unit =
-    StormSubmitter.submitTopologyWithProgressBar(stormConfig.topologyName, clusterConfig, topology)
+    StormSubmitter.submitTopologyWithProgressBar(stormConfig.topologyName, topoConfig, topology)
 }

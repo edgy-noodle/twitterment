@@ -12,7 +12,7 @@ object Tw4jTopology extends BaseTopology {
     val tw4jStream = Tw4jStream(twitterConfig, tweetProducer)
   }
 
-  def apply(isLocal: Boolean): Unit = {
+  def apply(isLocal: Boolean = false): Unit = {
     produceTweets()
     if (isLocal) startLocalTopology()
     else startRemoteTopology()
